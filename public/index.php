@@ -9,3 +9,5 @@ return function (array $context) {
 };
 
 // Tema la taille du ratio de compression
+
+//c'est un commentaire
