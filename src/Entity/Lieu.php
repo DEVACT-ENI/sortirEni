@@ -11,7 +11,7 @@ class Lieu
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $idLieu = null;
+    private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
@@ -29,9 +29,9 @@ class Lieu
     #[ORM\JoinColumn(nullable: false)]
     private ?Ville $ville = null;
 
-    public function getIdLieu(): ?int
+    public function getId(): ?int
     {
-        return $this->idLieu;
+        return $this->id;
     }
 
     public function getNom(): ?string
