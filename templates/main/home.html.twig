@@ -1,7 +1,94 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Liste des sorties{% endblock %}
 
 {% block body %}
-    <p>C'est la page d'accueil</p>
+    <h2>Date du jour : {{ 'now'|date('d/m/Y') }}</h2>
+    {#     Participant equivalent a User #}
+{#    <h2>Participant : {{ app.user.pseudo }}</h2>#}
+
+    <h2>Filtrer les sorties</h2>
+    <form action="{{ path('home') }}" method="get">
+        {#         choix deroulant permis les trois campus de la base de données #}
+        <label for="campus">Campus </label>
+        <select name="campus" id="campus">
+            {% for campus in campuses %}
+                <option value="{{ campus.id }}">{{ campus.nom }}</option>
+            {% endfor %}
+        </select>
+        {#         rechercher par mot clé #}
+        <label for="keyword">Le nom de la sortie contient : </label>
+        <input type="text" name="keyword" id="keyword">
+        {#         entre deux dates #}
+        <label for="dateDebut">Entre </label>
+        <input type="date" name="dateDebut" id="dateDebut">
+        <label for="dateFin"> et </label>
+        <input type="date" name="dateFin" id="dateFin">
+        {#         boutons selects  pour les sorties dont je suis l'organisateur, auxquelles je suis inscrit, celles auxquelles je ne suis pas inscrit et les sorties passées #}
+        <input type="checkbox" name="organisateur" id="organisateur">
+        <label for="organisateur">Sorties dont je suis l'organisateur/trice</label>
+        <input type="checkbox" name="inscrit" id="inscrit">
+        <label for="inscrit">Sorties auxquelles je suis inscrit/e</label>
+        <input type="checkbox" name="nonInscrit" id="nonInscrit">
+        <label for="nonInscrit">Sorties auxquelles je ne suis pas inscrit/e</label>
+        <input type="checkbox" name="sortiesPassees" id="sortiesPassees">
+        <label for="sortiesPassees">Sorties passées</label>
+        <input type="submit" value="Rechercher">
+
+    </form>
+    <h2>Liste des sorties</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Nom de la sortie</th>
+            <th>Date de la sortie</th>
+            <th>Cloture</th>
+            <th>Inscrits/places</th>
+            <th>Etat</th>
+            <th>Inscrit</th>
+            <th>Organisateur</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sortie in sorties %}
+            <tr>
+                <td>{{ sortie.nom }}</td>
+                <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
+                <td>{{ sortie.dateLimiteInscription|date('d/m/Y') }}</td>
+                <td>{{ sortie.participants.count }}/{{ sortie.nbInscriptionsMax }}</td>
+                <td>{{ sortie.etat.libelle }}</td>
+                {#                     affiche une croix si l'utilisateur connecté est inscrit à la sortie et un vide sinon #}
+                <td>{% if sortie.participants.contains(app.user) %}X{% endif %}</td>
+                <td>{{ sortie.organisateur.pseudo }}</td>
+                <td>
+                    {#                         de base un bouton afficher, si l'utilisateur est inscrit à la sortie, un bouton se désister apparait, si la sortie est encore ouverte, un bouton s'inscrire apparait, si l'utilisateur est l'organisateur, un bouton modifier apparait et un bouton publier, si la sortie est ouverte, le bouton afficher s'affiche ainsi que le bouton annuler. s'epparer les boutons par ' - ' #}
+                    <a href="{{ path('afficher_sortie', {'id': sortie.id}) }}">Afficher</a>
+                    {% if sortie.participants.contains(app.user) %}
+                        - <a href="{{ path('se_desister', {'id': sortie.id}) }}">Se désister</a>
+                    {% elseif sortie.etat.libelle == 'Ouverte' %}
+                        - <a href="{{ path('s_inscrire', {'id': sortie.id}) }}">S'inscrire</a>
+                    {% endif %}
+                    {% if sortie.organisateur == app.user %}
+                        - <a href="{{ path('modifier_sortie', {'id': sortie.id}) }}">Modifier</a>
+                        - <a href="{{ path('publier_sortie', {'id': sortie.id}) }}">Publier</a>
+                    {% endif %}
+                    {% if sortie.etat.libelle == 'Ouverte' %}
+                        - <a href="{{ path('annuler_sortie', {'id': sortie.id}) }}">Annuler</a>
+                    {% endif %}
+
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {#     bouton pour creer une nouvelle sortie #}
+    <a href="{{ path('creer_sortie') }}">Créer une sortie</a>
+
+
+
+
+
 {% endblock %}
