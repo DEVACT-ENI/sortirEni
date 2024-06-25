@@ -150,12 +150,12 @@ class Sortie
         return $this;
     }
 
-    public function getOrganisateur(): ?ParticipantTest
+    public function getOrganisateur(): ?Participant
     {
         return $this->organisateur;
     }
 
-    public function setOrganisateur(?ParticipantTest $organisateur): static
+    public function setOrganisateur(?Participant $organisateur): static
     {
         $this->organisateur = $organisateur;
 
