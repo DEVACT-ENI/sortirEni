@@ -5,9 +5,10 @@ namespace App\DataFixtures;
 use App\Entity\Ville;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class VilleFixture extends Fixture implements FixtureGroupInterface
+class VilleFixture extends Fixture implements FixtureGroupInterface, OrderedFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -31,5 +32,10 @@ class VilleFixture extends Fixture implements FixtureGroupInterface
     public static function getGroups(): array
     {
         return ['ville', "all"];
+    }
+
+    public function getOrder(): int
+    {
+       return 1;
     }
 }

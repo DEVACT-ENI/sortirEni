@@ -6,11 +6,17 @@ use App\Entity\Lieu;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 
-class LieuFixture extends Fixture implements FixtureGroupInterface, DependentFixtureInterface
+class LieuFixture extends Fixture implements FixtureGroupInterface, OrderedFixtureInterface
 {
+    public function __construct()
+    {
+
+    }
+
     public function load(ObjectManager $manager): void
     {
         $this->createLieu($manager);
@@ -25,7 +31,7 @@ class LieuFixture extends Fixture implements FixtureGroupInterface, DependentFix
             $lieu->setRue($faker->streetAddress());
             $lieu->setLatitude($faker->latitude());
             $lieu->setLongitude($faker->longitude());
-            $lieu->setVille($this->getReference('ville-'.rand(0, 40)));
+            $lieu->setVille($this->getReference('ville-' . rand(0, 40)));
 
             $manager->persist($lieu);
         }
@@ -37,10 +43,8 @@ class LieuFixture extends Fixture implements FixtureGroupInterface, DependentFix
         return ['lieu', "all"];
     }
 
-    public function getDependencies(): array
+    public function getOrder(): int
     {
-        return [
-            VilleFixture::class,
-        ];
+        return 2;
     }
 }
