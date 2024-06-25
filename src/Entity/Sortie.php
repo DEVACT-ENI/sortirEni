@@ -163,14 +163,14 @@ class Sortie
     }
 
     /**
-     * @return Collection<int, ParticipantTest>
+     * @return Collection<int, Participant>
      */
     public function getListInscrit(): Collection
     {
         return $this->listInscrit;
     }
 
-    public function addListInscrit(ParticipantTest $listInscrit): static
+    public function addListInscrit(Participant $listInscrit): static
     {
         if (!$this->listInscrit->contains($listInscrit)) {
             $this->listInscrit->add($listInscrit);
@@ -179,7 +179,7 @@ class Sortie
         return $this;
     }
 
-    public function removeListInscrit(ParticipantTest $listInscrit): static
+    public function removeListInscrit(Participant $listInscrit): static
     {
         $this->listInscrit->removeElement($listInscrit);
 
