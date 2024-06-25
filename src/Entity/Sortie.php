@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SortieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -35,6 +37,29 @@ class Sortie
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Etat $etat = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Participant $organisateur = null;
+
+    /**
+     * @var Collection<int, Participant>
+     */
+    #[ORM\ManyToMany(targetEntity: Participant::class)]
+    private Collection $listInscrit;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Campus $campus = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Lieu $lieu = null;
+
+    public function __construct()
+    {
+        $this->listInscrit = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,6 +146,66 @@ class Sortie
     public function setEtat(?Etat $etat): static
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getOrganisateur(): ?Participant
+    {
+        return $this->organisateur;
+    }
+
+    public function setOrganisateur(?Participant $organisateur): static
+    {
+        $this->organisateur = $organisateur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParticipantTest>
+     */
+    public function getListInscrit(): Collection
+    {
+        return $this->listInscrit;
+    }
+
+    public function addListInscrit(ParticipantTest $listInscrit): static
+    {
+        if (!$this->listInscrit->contains($listInscrit)) {
+            $this->listInscrit->add($listInscrit);
+        }
+
+        return $this;
+    }
+
+    public function removeListInscrit(ParticipantTest $listInscrit): static
+    {
+        $this->listInscrit->removeElement($listInscrit);
+
+        return $this;
+    }
+
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?Campus $campus): static
+    {
+        $this->campus = $campus;
+
+        return $this;
+    }
+
+    public function getLieu(): ?Lieu
+    {
+        return $this->lieu;
+    }
+
+    public function setLieu(?Lieu $lieu): static
+    {
+        $this->lieu = $lieu;
 
         return $this;
     }

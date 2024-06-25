@@ -11,14 +11,14 @@ class Etat
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $idEtat = null;
+    private ?int $id = null;
 
     #[ORM\Column(length: 20)]
     private ?string $libelle = null;
 
-    public function getIdEtat(): ?int
+    public function getId(): ?int
     {
-        return $this->idEtat;
+        return $this->id;
     }
 
     public function getLibelle(): ?string

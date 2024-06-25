@@ -11,14 +11,14 @@ class Campus
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $idCampus = null;
+    private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    public function getIdCampus(): ?int
+    public function getId(): ?int
     {
-        return $this->idCampus;
+        return $this->id;
     }
 
     public function getNom(): ?string
