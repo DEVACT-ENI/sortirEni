@@ -150,12 +150,12 @@ class Sortie
         return $this;
     }
 
-    public function getOrganisateur(): ?Participant
+    public function getOrganisateur(): ?ParticipantTest
     {
         return $this->organisateur;
     }
 
-    public function setOrganisateur(?Participant $organisateur): static
+    public function setOrganisateur(?ParticipantTest $organisateur): static
     {
         $this->organisateur = $organisateur;
 
@@ -163,14 +163,14 @@ class Sortie
     }
 
     /**
-     * @return Collection<int, Participant>
+     * @return Collection<int, ParticipantTest>
      */
     public function getListInscrit(): Collection
     {
         return $this->listInscrit;
     }
 
-    public function addListInscrit(Participant $listInscrit): static
+    public function addListInscrit(ParticipantTest $listInscrit): static
     {
         if (!$this->listInscrit->contains($listInscrit)) {
             $this->listInscrit->add($listInscrit);
@@ -179,7 +179,7 @@ class Sortie
         return $this;
     }
 
-    public function removeListInscrit(Participant $listInscrit): static
+    public function removeListInscrit(ParticipantTest $listInscrit): static
     {
         $this->listInscrit->removeElement($listInscrit);
 
