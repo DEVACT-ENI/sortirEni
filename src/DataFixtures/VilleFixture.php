@@ -24,7 +24,6 @@ class VilleFixture extends Fixture implements FixtureGroupInterface, OrderedFixt
             $ville->setNom($nomVille);
             $ville->setCodePostal($codePostal);
             $manager->persist($ville);
-            $this->addReference("ville-".$i++, $ville);
         }
         $manager->flush();
     }

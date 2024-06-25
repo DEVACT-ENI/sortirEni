@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Lieu;
+use App\Repository\VilleRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -12,10 +13,7 @@ use Faker\Factory;
 
 class LieuFixture extends Fixture implements FixtureGroupInterface, OrderedFixtureInterface
 {
-    public function __construct()
-    {
-
-    }
+    public function __construct(private readonly VilleRepository $villeRepository){}
 
     public function load(ObjectManager $manager): void
     {
@@ -25,14 +23,15 @@ class LieuFixture extends Fixture implements FixtureGroupInterface, OrderedFixtu
     private function createLieu(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
+        $tabVille = $this->villeRepository->findAll();
+
         for ($i = 0; $i < 10; $i++) {
             $lieu = new Lieu();
             $lieu->setNom($faker->company());
             $lieu->setRue($faker->streetAddress());
             $lieu->setLatitude($faker->latitude());
             $lieu->setLongitude($faker->longitude());
-            $lieu->setVille($this->getReference('ville-' . rand(0, 40)));
-
+            $lieu->setVille($faker->randomElement($tabVille));
             $manager->persist($lieu);
         }
         $manager->flush();
