@@ -29,19 +29,19 @@
     </div>
 
     {% if is_granted("PERM_BOUTTON_MODIFIER", sortie) %}
-        - <a href="{{ path('sorties_update', {'id': sortie.id}) }}">Modifier</a>
+        - <a class="btn btn-warning" href="{{ path('sorties_update', {'id': sortie.id}) }}">Modifier</a>
     {% endif %}
     {% if is_granted("PERM_BOUTTON_PUBLIER", sortie) %}
-        - <a href="{{ path('main_home', {'id': sortie.id}) }}">Publier</a>
+        - <a class="btn btn-success" href="{{ path('main_home', {'id': sortie.id}) }}">Publier</a>
     {% endif %}
     {% if is_granted("PERM_BOUTTON_ANNULER", sortie) %}
-        - <a href="{{ path('main_home', {'id': sortie.id}) }}">Annuler</a>
+        - <a class="btn btn-danger" href="{{ path('main_home', {'id': sortie.id}) }}">Annuler</a>
     {% endif %}
     {% if is_granted("PERM_BOUTTON_DESINSCRIPTION", sortie) %}
-        - <a href="{{ path('participants_desinscription_sortie', {'id': sortie.id}) }}">Se désister</a>
+        - <a class="btn btn-danger" href="{{ path('participants_desinscription_sortie', {'id': sortie.id}) }}">Se désister</a>
     {% endif %}
     {% if is_granted("PERM_BOUTTON_INSCRIPTION", sortie) %}
-        - <a href="{{ path('participants_inscription_sortie', {'id': sortie.id}) }}">S'inscrire</a>
+        - <a class="btn btn-success" href="{{ path('participants_inscription_sortie', {'id': sortie.id}) }}">S'inscrire</a>
     {% endif %}
 
 {#    affichage des participants#}
