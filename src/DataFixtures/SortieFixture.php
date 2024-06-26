@@ -36,15 +36,33 @@ class SortieFixture extends Fixture implements FixtureGroupInterface, OrderedFix
         for ($i = 0; $i < 10; $i++) {
             $sortie = new Sortie();
             $sortie->setNom($faker->sentence(3));
-            $sortie->setDateHeureDebut($faker->dateTimeBetween('-10 days', '+25 days'));
-            $sortie->setDuree($faker->numberBetween(60, 360));
-            $sortie->setDateLimiteInscription($faker->dateTimeBetween('-10 days', '+25 days'));
+            $dateLimiteInscription = $faker->dateTimeBetween('-15 days', '+15 days');
+            $sortie->setDateLimiteInscription($dateLimiteInscription);
+            $dateHeureDebut = clone $dateLimiteInscription;
+            $dateHeureDebut->modify('+' . $faker->numberBetween(3, 15) . ' days');
+            $sortie->setDateHeureDebut($dateHeureDebut);
+            $sortie->setDuree($faker->numberBetween(60, 180));
             $sortie->setNbInscriptionMax($faker->numberBetween(5, 20));
             $sortie->setInfoSortie($faker->text(200));
             $sortie->setCampus($faker->randomElement($tabCampus));
-            $sortie->setOrganisateur($faker->randomElement($tabParticipants));
-            $sortie->setEtat($faker->randomElement($tabEtats));
+            $organisateur = $faker->randomElement($tabParticipants);
+            $sortie->setOrganisateur($organisateur);
+            $sortie->addListInscrit($organisateur);
             $sortie->setLieu($faker->randomElement($tabLieux));
+            $now = new \DateTime();
+            if ($dateHeureDebut > $now) {
+                if ($dateLimiteInscription > $now) {
+                    $sortie->setEtat($this->etatRepository->findOneBy(['libelle' => 'Ouverte']));
+                } else {
+                    $sortie->setEtat($this->etatRepository->findOneBy(['libelle' => 'Clôturée']));
+                }
+            } else {
+                if ($dateHeureDebut->modify('+' . $sortie->getDuree() . ' minutes') > $now) {
+                    $sortie->setEtat($this->etatRepository->findOneBy(['libelle' => 'Activité en cours']));
+                } else {
+                    $sortie->setEtat($this->etatRepository->findOneBy(['libelle' => 'Passée']));
+                }
+            }
             $manager->persist($sortie);
         }
         $manager->flush();

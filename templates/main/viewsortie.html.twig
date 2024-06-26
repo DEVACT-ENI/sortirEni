@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ sortie.nom }}{% endblock %}
+
+
+{% block body %}
+    <h1>Afficher une sortie</h1>
+
+{#affichage des informations de la sortie#}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title
+            ">Nom de la sortie : {{ sortie.nom }}</h5>
+            <p class="card-text">Date de la sortie : {{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</p>
+            <p class="card-text">Date limite d'inscription : {{ sortie.dateLimiteInscription|date('d/m/Y') }}</p>
+            <p class="card-text">Nombre de places : {{ sortie.nbInscriptionMax }}</p>
+            <p class="card-text">Durée : {{ sortie.duree }} minutes</p>
+            <p class="card-text">Description et infos : {{ sortie.infoSortie }}</p>
+            <p class="card-text">Campus : {{ sortie.campus.nom }}</p>
+            <p class="card-text">Lieu : {{ sortie.lieu.nom }}</p>
+            <p class="card-text">Rue : {{ sortie.lieu.rue }}</p>
+            <p class="card-text">Code postal : {{ sortie.lieu.ville.codePostal }}</p>
+            <p class="card-text">Ville : {{ sortie.lieu.ville.nom }}</p>
+
+
+{#            <p class="card-text">Latitude : {{ sortie.lieu.latitude }}</p>#}
+{#            <p class="card-text">Longitude : {{ sortie.lieu.longitude }}</p>#}
+        </div>
+    </div>
+
+
+    {% if app.user %}
+        {% if sortie.etat.libelle == 'Creee' and app.user == sortie.organisateur %}
+            <a href="{{ path('main_home', {'id': sortie.id}) }}" class="btn btn-primary">Modifier</a>
+            <a href="{{ path('main_home', {'id': sortie.id}) }}" class="btn btn-danger">Supprimer</a>
+        {% elseif sortie.etat.libelle == 'Ouverte' %}
+            {% if not sortie.listInscrit.contains(app.user) %}
+                <a href="{{ path('main_home', {'id': sortie.id}) }}" class="btn btn-primary">Participer</a>
+            {% else %}
+                <a href="{{ path('main_home', {'id': sortie.id}) }}" class="btn btn-danger">Se Désister</a>
+            {% endif %}
+            {% if app.user == sortie.organisateur %}
+                <a href="{{ path('main_home', {'id': sortie.id}) }}" class="btn btn-warning">Annuler</a>
+            {% endif %}
+        {% elseif sortie.etat.libelle == 'Cloturee' and sortie.listInscrit.contains(app.user) %}
+            <a href="{{ path('main_home', {'id': sortie.id}) }}" class="btn btn-danger">Se Désister</a>
+            {% if app.user == sortie.organisateur %}
+                <a href="{{ path('main_home', {'id': sortie.id}) }}" class="btn btn-warning">Annuler</a>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+{#    affichage des participants#}
+
+    <h2>Participants</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Nom</th>
+        </tr>
+        </thead>
+        <tbody>
+{#            tableau avec username puis nom complet#}
+            {% for user in sortie.listInscrit %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.prenom }} {{ user.nom|upper }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+    {% block styles %}
+        <style>
+            .card {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .card-text {
+                line-height: 1.5;
+            }
+
+            .btn {
+                display: block;
+                width: 200px;
+                margin: 20px auto;
+            }
+        </style>
+    {% endblock %}
+
+
+
+
+{% endblock %}
+
