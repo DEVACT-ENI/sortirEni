@@ -55,11 +55,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: 'Le prénom doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'Le prénom doit contenir au maximum {{ limit }} caractères.'
     )]
-    #[Assert\Range(
-        min: 2,
-        max: 50,
-        notInRangeMessage: 'Le prénom doit contenir entre {{ min }} et {{ max }} caractères.'
-    )]
     private ?string $prenom = null;
 
     /**
