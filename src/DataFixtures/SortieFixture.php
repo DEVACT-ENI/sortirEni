@@ -45,13 +45,27 @@ class SortieFixture extends Fixture implements FixtureGroupInterface, OrderedFix
             $sortie->setNbInscriptionMax($faker->numberBetween(5, 20));
             $sortie->setInfoSortie($faker->text(200));
             $sortie->setCampus($faker->randomElement($tabCampus));
-            $sortie->setOrganisateur($faker->randomElement($tabParticipants));
-            $sortie->setEtat($faker->randomElement($tabEtats));
+            $organisateur = $faker->randomElement($tabParticipants);
+            $sortie->setOrganisateur($organisateur);
+            $sortie->addParticipant($organisateur);
             $sortie->setLieu($faker->randomElement($tabLieux));
+            $now = new \DateTime();
+            if ($dateHeureDebut > $now) {
+                if ($dateLimiteInscription > $now) {
+                    $sortie->setEtat($this->etatRepository->findOneBy(['libelle' => 'Ouverte']));
+                } else {
+                    $sortie->setEtat($this->etatRepository->findOneBy(['libelle' => 'Clôturée']));
+                }
+            } else {
+                if ($dateHeureDebut->modify('+' . $sortie->getDuree() . ' minutes') > $now) {
+                    $sortie->setEtat($this->etatRepository->findOneBy(['libelle' => 'Activité en cours']));
+                } else {
+                    $sortie->setEtat($this->etatRepository->findOneBy(['libelle' => 'Passée']));
+                }
+            }
             $manager->persist($sortie);
         }
         $manager->flush();
-
 
 
     }
