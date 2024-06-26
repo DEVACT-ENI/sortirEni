@@ -47,7 +47,7 @@ class SortieFixture extends Fixture implements FixtureGroupInterface, OrderedFix
             $sortie->setCampus($faker->randomElement($tabCampus));
             $organisateur = $faker->randomElement($tabParticipants);
             $sortie->setOrganisateur($organisateur);
-            $sortie->addParticipant($organisateur);
+            $sortie->addListInscrit($organisateur);
             $sortie->setLieu($faker->randomElement($tabLieux));
             $now = new \DateTime();
             if ($dateHeureDebut > $now) {
