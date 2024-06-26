@@ -170,7 +170,7 @@ class Sortie
         return $this->listInscrit;
     }
 
-    public function addListInscrit(Participant $listInscrit): static
+    public function addListInscrit(?Participant $listInscrit): static
     {
         if (!$this->listInscrit->contains($listInscrit)) {
             $this->listInscrit->add($listInscrit);
