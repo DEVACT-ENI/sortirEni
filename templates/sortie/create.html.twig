@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h2>{{ Title }}</h2>
+
+    {{ form_start(sortieForm) }}
+    {{ form_widget(sortieForm) }}
+    <button>Validate !</button>
+    {{ form_end(sortieForm) }}
+
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

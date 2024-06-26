@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
 class Sortie
@@ -16,6 +18,8 @@ class Sortie
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message: 'Veuillez renseigner un nom pour la sortie !')]
+    #[Assert\Length(max: 250, maxMessage: "Le titre ne peut dépasser 255 caractères")]
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
@@ -23,15 +27,19 @@ class Sortie
     private ?\DateTimeInterface $dateHeureDebut = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Veuillez renseigner une duree pour la sortie !')]
     private ?string $duree = null;
 
+    #[Assert\GreaterThan(propertyPath: 'dateHeureDebut')]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'Veuillez renseigner le nombre maximum de personnes pour la sortie !')]
     private ?int $nbInscriptionMax = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\Range(notInRangeMessage: 'Le texte doit contenir entre {{ min }} et {{ max}} caractères', min: 2, max: 255)]
     private ?string $infoSortie = null;
 
     #[ORM\ManyToOne]
@@ -163,14 +171,14 @@ class Sortie
     }
 
     /**
-     * @return Collection<int, ParticipantTest>
+     * @return Collection<int, Participant>
      */
     public function getListInscrit(): Collection
     {
         return $this->listInscrit;
     }
 
-    public function addListInscrit(ParticipantTest $listInscrit): static
+    public function addListInscrit(?Participant $listInscrit): static
     {
         if (!$this->listInscrit->contains($listInscrit)) {
             $this->listInscrit->add($listInscrit);
@@ -179,7 +187,7 @@ class Sortie
         return $this;
     }
 
-    public function removeListInscrit(ParticipantTest $listInscrit): static
+    public function removeListInscrit(Participant $listInscrit): static
     {
         $this->listInscrit->removeElement($listInscrit);
 
