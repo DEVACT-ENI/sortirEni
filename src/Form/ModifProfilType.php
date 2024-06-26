@@ -38,6 +38,7 @@ class ModifProfilType extends AbstractType
                 'first_options' => ['label' => 'mot de passe'],
                 'second_options' => ['label' => 'Confirmer le mot de passe'],
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
+                'mapped' => false,
             ])
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
@@ -50,7 +51,7 @@ class ModifProfilType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Participant::class,
-            'required' => false,
+            'attr' => ['novalidate' => 'novalidate'],
         ]);
     }
 }

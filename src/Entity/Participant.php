@@ -40,7 +40,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'Le nom ne doit pas être vide.')]
     #[Assert\Length(
         min: 2,
         max: 50,
@@ -50,20 +49,38 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'Le prénom ne doit pas être vide.')]
     #[Assert\Length(
         min: 2,
         max: 50,
         minMessage: 'Le prénom doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'Le prénom doit contenir au maximum {{ limit }} caractères.'
     )]
+    #[Assert\Range(
+        min: 2,
+        max: 50,
+        notInRangeMessage: 'Le prénom doit contenir entre {{ min }} et {{ max }} caractères.'
+    )]
     private ?string $prenom = null;
 
+    /**
+     * ^ : pour dire dès le début de la chaine $numero on veut "(\+33|0)"
+     * (\+33|0) : pour dire +33 ou 0, la barre oblique est "ou", les parenthèses nous servent à englober notre condition
+     * [67] : suivi de 6 ou 7, les crochets (une classe) nous permettent de demander 6 ou 7, on aurait par exemple pu mettre 679 pour accepte les 09
+     * [0-9] : une plage de 0 à 9 (grâce au tiret), de 8 caractères grâce à {8} qui le suit
+     * $ : pour dire la fin de la chaine doit s'arrêter là et ne pas accepter autre chose après le numéro
+     */
+
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'Le numéro de téléphone ne doit pas être vide.')]
+    #[Assert\Regex(
+        pattern : "#^(\+33|0)[67][0-9]{8}$#",
+        message: "Le numéro de téléphone n'est pas valide."
+    )]
     private ?string $telephone = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Email(
+        message: "L'email '{{ value }}' n'est pas valide."
+    )]
     private ?string $mail = null;
 
     #[ORM\Column]
