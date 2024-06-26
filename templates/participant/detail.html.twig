@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Username : {{ participant.username }}</h5>
+            <p class="card-text">Nom : {{ participant.nom }}</p>
+            <p class="card-text">Prénom : {{ participant.prenom }}</p>
+            <p class="card-text">Téléphone : {{ participant.telephone }}</p>
+            <p class="card-text">Email : {{ participant.mail }}</p>
+            <p class="card-text">Campus : {{ participant.campus.nom }}</p>
+        </div>
+{% endblock %}
+
+{% block title %}
+Detail {{ participant.username }}
+{% endblock %}
+

@@ -73,7 +73,7 @@
                 {% if app.user %}
                     <td>{% if sortie.listInscrit.contains(app.user) %}X{% endif %}</td>
                 {% endif %}
-                <td>{{ sortie.organisateur.username }}</td>
+                <td><a href="{{ path('participants_detail', {'id': sortie.organisateur.id }) }}">{{ sortie.organisateur.username }}</a></td>
                 <td>
                     {% if app.user %}
                         {#                         de base un bouton afficher, si l'utilisateur est inscrit à la sortie, un bouton se désister apparait, si la sortie est encore ouverte, un bouton s'inscrire apparait, si l'utilisateur est l'organisateur, un bouton modifier apparait et un bouton publier, si la sortie est ouverte, le bouton afficher s'affiche ainsi que le bouton annuler. s'epparer les boutons par ' - ' #}
