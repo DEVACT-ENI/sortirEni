@@ -35,15 +35,15 @@
             <a href="{{ path('main_home', {'id': sortie.id}) }}" class="btn btn-danger">Supprimer</a>
         {% elseif sortie.etat.libelle == 'Ouverte' %}
             {% if not sortie.listInscrit.contains(app.user) %}
-                <a href="{{ path('main_home', {'id': sortie.id}) }}" class="btn btn-primary">Participer</a>
+                <a href="{{ path('participants_inscription_sortie', {'id': sortie.id}) }}" class="btn btn-primary">Participer</a>
             {% else %}
-                <a href="{{ path('main_home', {'id': sortie.id}) }}" class="btn btn-danger">Se Désister</a>
+                <a href="{{ path('participants_desinscription_sortie', {'id': sortie.id}) }}" class="btn btn-danger">Se Désister</a>
             {% endif %}
             {% if app.user == sortie.organisateur %}
                 <a href="{{ path('main_home', {'id': sortie.id}) }}" class="btn btn-warning">Annuler</a>
             {% endif %}
         {% elseif sortie.etat.libelle == 'Cloturee' and sortie.listInscrit.contains(app.user) %}
-            <a href="{{ path('main_home', {'id': sortie.id}) }}" class="btn btn-danger">Se Désister</a>
+            <a href="{{ path('participants_desinscription_sortie', {'id': sortie.id}) }}" class="btn btn-danger">Se Désister</a>
             {% if app.user == sortie.organisateur %}
                 <a href="{{ path('main_home', {'id': sortie.id}) }}" class="btn btn-warning">Annuler</a>
             {% endif %}
@@ -64,7 +64,7 @@
 {#            tableau avec username puis nom complet#}
             {% for user in sortie.listInscrit %}
                 <tr>
-                    <td>{{ user.username }}</td>
+                    <td><a href="{{ path('participants_detail', {'id': user.id}) }}"> {{ user.username }} </a> </td>
                     <td>{{ user.prenom }} {{ user.nom|upper }}</td>
                 </tr>
             {% endfor %}

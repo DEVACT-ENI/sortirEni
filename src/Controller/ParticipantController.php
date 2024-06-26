@@ -51,4 +51,14 @@ class ParticipantController extends AbstractController
         return $this->redirectToRoute('main_home');
     }
 
+    #[Route('/detail/{id}', name: 'detail', methods: ['GET'])]
+    public function detail(ParticipantRepository $participantRepository, int $id): Response
+    {
+        $participant = $participantRepository->find($id);
+
+        return $this->render('participant/detail.html.twig', [
+            'participant' => $participant,
+        ]);
+    }
+
 }
