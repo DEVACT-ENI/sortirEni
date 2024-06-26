@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Sortie;
 use App\Form\SortieType;
+use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
@@ -21,12 +22,13 @@ class SortieController extends AbstractController
         Request                 $request,
         EntityManagerInterface  $entityManager,
         SortieRepository        $sortieRepository,
+        EtatRepository          $etatRepository,
         int                     $id = null
     ): Response
     {
         if ($id) {
             $sortie = $sortieRepository->find($id);
-            if ($this->getUser() != $sortie->getUser()) {
+            if ($this->getUser() !== $sortie->getOrganisateur()) {
                 throw $this->createAccessDeniedException('You are not allowed to edit this entity if you are not the owner');
             }
         } else {
@@ -34,14 +36,16 @@ class SortieController extends AbstractController
             $user = $this->getUser();
             $sortie->setOrganisateur($user);
             $sortie->addListInscrit($user);
+            $sortie->setEtat($etatRepository->find(1));
+            $sortie->setDateHeureDebut(new \DateTime());
+            $sortie->setDateLimiteInscription(new \DateTime());
         }
 
 
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
 
-        //TODO rajouter la condition de la validation
-        if ($sortieForm->isSubmitted()) {
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
 
             $entityManager->persist($sortie);
             $entityManager->flush();
@@ -52,6 +56,7 @@ class SortieController extends AbstractController
         }
             return $this->render('sortie/create.html.twig', [
                 "sortieForm" => $sortieForm->createView(),
+                "Title" => $sortie->getId() !=null ?"Mettre à jour la sortie" : "Créer la sortie"
             ]);
     }
 
