@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -32,15 +33,11 @@ class ModifProfilType extends AbstractType
             ->add('mail', EmailType::class, [
                 'label' => 'Email',
             ])
-            ->add('password', PasswordType::class, [
-                'label' => 'Mot de passe',
-                'hash_property_path' => 'password',
-                'mapped' => false,
-            ])
-            ->add('confirm_password', PasswordType::class, [
-                'label' => 'Confirmation',
-                'hash_property_path' => 'password',
-                'mapped' => false,
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'first_options' => ['label' => 'mot de passe'],
+                'second_options' => ['label' => 'Confirmer le mot de passe'],
+                'invalid_message' => 'Les mots de passe ne correspondent pas.',
             ])
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
