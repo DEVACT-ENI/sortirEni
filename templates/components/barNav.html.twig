@@ -8,6 +8,21 @@
                 <a class="nav-link" href="{{ path('main_home') }}">Home</a>
             </li>
 
+{#            <li class="nav-item">#}
+{#                <a class="nav-link" href="{{ path('') }}">Villes</a>#}
+{#            </li>#}
+{#            <li class="nav-item">#}
+{#                <a class="nav-link" href="{{ path('') }}">Campus</a>#}
+{#            </li>#}
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('main_home') }}">Accueil</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('main_home') }}">Mon Profil</a>
+            </li>
+
             {% if app.user %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('participants_modif_profil', {'id': app.user.id}) }}">Profile</a>
@@ -19,7 +34,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_login') }}">Login</a>
                 </li>
-            {% endif %}
+            {% endif %}s
         </ul>
     </div>
 </nav>
