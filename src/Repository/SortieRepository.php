@@ -2,16 +2,19 @@
 
 namespace App\Repository;
 
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Sortie>
  */
 class SortieRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private readonly EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Sortie::class);
     }
@@ -89,5 +92,23 @@ class SortieRepository extends ServiceEntityRepository
 
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function inscription(int $id, string $username): void
+    {
+        $sortie = $this->find($id);
+        $participant = $this->entityManager->getRepository(Participant::class)->findOneBy(['username' => $username]);
+        $sortie->addListInscrit($participant);
+        $this->entityManager->persist($sortie);
+        $this->entityManager->flush();
+    }
+
+    public function desinscription(int $id, string $getUserIdentifier): void
+    {
+        $sortie = $this->find($id);
+        $participant = $this->entityManager->getRepository(Participant::class)->findOneBy(['username' => $getUserIdentifier]);
+        $sortie->removeListInscrit($participant);
+        $this->entityManager->persist($sortie);
+        $this->entityManager->flush();
     }
 }

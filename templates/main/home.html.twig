@@ -79,9 +79,9 @@
                         {#                         de base un bouton afficher, si l'utilisateur est inscrit à la sortie, un bouton se désister apparait, si la sortie est encore ouverte, un bouton s'inscrire apparait, si l'utilisateur est l'organisateur, un bouton modifier apparait et un bouton publier, si la sortie est ouverte, le bouton afficher s'affiche ainsi que le bouton annuler. s'epparer les boutons par ' - ' #}
                         <a href="{{ path('main_home', {'id': sortie.id}) }}">Afficher</a>
                         {% if sortie.listInscrit.contains(app.user) %}
-                            - <a href="{{ path('main_home', {'id': sortie.id}) }}">Se désister</a>
+                            - <a href="{{ path('participants_desinscription_sortie', {'id': sortie.id}) }}">Se désister</a>
                         {% elseif sortie.etat.libelle == 'Ouverte' %}
-                            - <a href="{{ path('main_home', {'id': sortie.id}) }}">S'inscrire</a>
+                            - <a href="{{ path('participants_inscription_sortie', {'id': sortie.id}) }}">S'inscrire</a>
                         {% endif %}
                         {% if sortie.organisateur == app.user %}
                             - <a href="{{ path('sorties_update', {'id': sortie.id}) }}">Modifier</a>
