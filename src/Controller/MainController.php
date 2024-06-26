@@ -32,4 +32,18 @@ class MainController extends AbstractController
             'campuses' => $campuses,
         ]);
     }
+
+    #[Route('/sortie/{id}', name: 'sortie_view')]
+    public function viewSortie(int $id, SortieRepository $sortieRepository): Response
+    {
+        $sortie = $sortieRepository->find($id);
+
+        if (!$sortie) {
+            throw $this->createNotFoundException('The sortie does not exist');
+        }
+
+        return $this->render('main/viewsortie.html.twig', [
+            'sortie' => $sortie,
+        ]);
+    }
 }
