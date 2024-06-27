@@ -90,7 +90,8 @@ class SortieRepository extends ServiceEntityRepository
         }
 
 
-
+        $qb->AndWhere('s.etat != :etat')
+            ->setParameter('etat', '7');
         return $qb->getQuery()->getResult();
     }
 
@@ -108,6 +109,12 @@ class SortieRepository extends ServiceEntityRepository
         $sortie = $this->find($id);
         $participant = $this->entityManager->getRepository(Participant::class)->findOneBy(['username' => $getUserIdentifier]);
         $sortie->removeListInscrit($participant);
+        $this->entityManager->persist($sortie);
+        $this->entityManager->flush();
+    }
+
+    public function save(Sortie $sortie)
+    {
         $this->entityManager->persist($sortie);
         $this->entityManager->flush();
     }

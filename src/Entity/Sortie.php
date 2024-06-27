@@ -31,7 +31,7 @@ class Sortie
     private ?string $duree = null;
 
     #[Assert\GreaterThan(propertyPath: 'dateHeureDebut')]
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
     #[ORM\Column]
