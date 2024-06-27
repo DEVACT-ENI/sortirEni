@@ -108,6 +108,8 @@
             </tbody>
         </table>
 
-        <a href="{{ path('main_home') }}" class="btn btn-primary">Créer une sortie</a>
+        {% if is_granted("PERM_BOUTTON_USER_CONNECTED") %}
+            <a href="{{ path('sorties_create') }}" class="btn btn-primary">Créer une sortie</a>
+        {% endif %}
     </div>
 {% endblock %}
