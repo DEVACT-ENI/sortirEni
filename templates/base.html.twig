@@ -16,7 +16,6 @@
 </header>
 
 <main class="flex-grow-1 text-center">
-    {% block body %}{% endblock %}
 
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">
@@ -29,6 +28,10 @@
             {{ message }}
         </div>
     {% endfor %}
+
+    {% block body %}{% endblock %}
+
+
 </main>
 
 <div class="flex-grow-1"></div>
