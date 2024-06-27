@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ sortie.nom }}{% endblock %}
+
+
+{% block body %}
+    <h1>Afficher une sortie</h1>
+
+{#affichage des informations de la sortie#}
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">Annuler une sortie</h1>
+            <p class="card-text">Nom de la sortie : {{ sortie.nom }}</p>
+            <p class="card-text">Date de la sortie : {{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</p>
+            <p class="card-text">Campus : {{ sortie.campus.nom }}</p>
+            <p class="card-text">Lieu : {{ sortie.lieu.nom }}  {{ sortie.lieu.rue }} {{ sortie.lieu.ville.codePostal }} {{ sortie.lieu.ville.nom }}</p>
+{#            motif de l'annulation remplacera la description de la sortie#}
+            <form action="{{ path('sorties_annuler', {'id': sortie.id}) }}" method="post">
+                <label for="motif">Motif de l'annulation</label>
+                <textarea name="motif" id="motif" cols="30" rows="10"></textarea>
+                <input type="submit" value="Annuler" class="btn btn-danger">
+            </form>
+        </div>
+
+    </div>
+
+
+
+
+
+    {% block styles %}
+        <style>
+            .card {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .card-text {
+                line-height: 1.5;
+            }
+
+            .btn {
+                display: block;
+                width: 200px;
+                margin: 20px auto;
+            }
+        </style>
+    {% endblock %}
+
+
+
+
+{% endblock %}
+
