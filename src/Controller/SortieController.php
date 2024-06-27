@@ -60,4 +60,53 @@ class SortieController extends AbstractController
             ]);
     }
 
+
+    #[Route('/annuler/{id}', name: 'annuler_form', methods: ['GET'])]
+    public function annulerSortieForm(int $id, SortieRepository $sortieRepository): Response
+    {
+        $sortie = $sortieRepository->find($id);
+
+        if (!$sortie) {
+            return $this->json(['error' => 'Sortie not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->render('main/annulersortie.html.twig', [
+            'sortie' => $sortie,
+        ]);
+    }
+
+    #[Route('/annuler/{id}', name: 'annuler', methods: ['POST'])]
+    public function annulerSortie(int $id, Request $request, SortieRepository $sortieRepository, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
+    {
+        $sortie = $sortieRepository->find($id);
+
+        if (!$sortie) {
+            $this->addFlash('error', 'Sortie pas trouvée');
+            return $this->redirectToRoute('main_home');
+        }
+
+        $motif = $request->request->get('motif');
+
+        if (!$motif) {
+            $this->addFlash('error', 'Motif est requis');
+            return $this->redirectToRoute('main_home');
+        }
+
+        $sortie->setInfoSortie($motif);
+
+        $etatAnnule = $etatRepository->findOneBy(['libelle' => 'Annulée']);
+        if (!$etatAnnule) {
+            $this->addFlash('error', 'Etat "Annulée" pas trouvé');
+            return $this->redirectToRoute('main_home');
+        }
+
+        $sortie->setEtat($etatAnnule);
+
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Sortie annulée !');
+        return $this->redirectToRoute('main_home');
+    }
+
 }

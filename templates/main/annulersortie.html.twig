@@ -4,12 +4,11 @@
 
 
 {% block body %}
-    <h1>Afficher une sortie</h1>
+    <h1>Annuler une sortie</h1>
 
 {#affichage des informations de la sortie#}
     <div class="card">
         <div class="card-body">
-            <h1 class="card-title">Annuler une sortie</h1>
             <p class="card-text">Nom de la sortie : {{ sortie.nom }}</p>
             <p class="card-text">Date de la sortie : {{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</p>
             <p class="card-text">Campus : {{ sortie.campus.nom }}</p>

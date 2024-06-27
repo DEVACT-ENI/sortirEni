@@ -35,7 +35,7 @@
         <a class="btn btn-success" href="{{ path('main_home', {'id': sortie.id}) }}">Publier</a>
     {% endif %}
     {% if is_granted("PERM_BOUTTON_ANNULER", sortie) %}
-        <a class="btn btn-danger" href="{{ path('main_home', {'id': sortie.id}) }}">Annuler</a>
+        - <a href="{{ path('sorties_annuler_form', {'id': sortie.id}) }}">Annuler</a>
     {% endif %}
     {% if is_granted("PERM_BOUTTON_DESINSCRIPTION", sortie) %}
         <a class="btn btn-danger" href="{{ path('participants_desinscription_sortie', {'id': sortie.id}) }}">Se désister</a>
