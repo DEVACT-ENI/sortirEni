@@ -5,7 +5,7 @@
 {% block body %}
     <div class="container">
         <h2 class="my-3">Date du jour : {{ 'now'|date('d/m/Y') }}</h2>
-        {% if app.user %}
+        {% if is_granted("IS_AUTHENTICATED") %}
             <h2 class="my-3">Participant : {{ app.user.username }}</h2>
         {% else %}
             <h2 class="my-3">Aucun utilisateur connecté</h2>
@@ -30,7 +30,7 @@
             <label for="dateFin"> et </label>
             <input type="date" name="dateFin" id="dateFin">
 
-            {% if app.user %}
+            {% if is_granted("IS_AUTHENTICATED") %}
                 {#         boutons selects  pour les sorties dont je suis l'organisateur, auxquelles je suis inscrit, celles auxquelles je ne suis pas inscrit et les sorties passées #}
                 <input type="checkbox" name="organisateur" id="organisateur" value="{{ app.user.username }}">
                 <label for="organisateur">Sorties dont je suis l'organisateur/trice</label>
@@ -71,7 +71,7 @@
                     <td>{{ sortie.listInscrit.count }}/{{ sortie.nbInscriptionMax }}</td>
                     <td>{{ sortie.etat.libelle }}</td>
                     {#                     affiche une croix si l'utilisateur connecté est inscrit à la sortie et un vide sinon #}
-                    {% if app.user %}
+                    {% if is_granted("IS_AUTHENTICATED") %}
                         <td>{% if sortie.listInscrit.contains(app.user) %}X{% endif %}</td>
                     {% endif %}
                     <td>

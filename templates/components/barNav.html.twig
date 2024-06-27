@@ -1,13 +1,10 @@
 <nav class="navbar bg-dark">
     <div class="container-fluid">
-{#        <a class="navbar-brand text-white" href="{{ path('main_home') }}"><img class="logo"#}
-{#                                                                               src="{{ asset('images/getbukkitwhite.svg') }}"#}
-{#                                                                               alt="image">Bucket-List</a>#}
+        <a class="navbar-brand text-white" href="{{ path('main_home') }}"><img class="logo"
+                                                                               style="width: 75px; height: 75px;"
+                                                                               src="{{ asset('images/lettre-coloree-s-fond-noir.png') }}"
+                                                                               alt="image">Sortie ENI</a>
         <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('main_home') }}">Home</a>
-            </li>
-
 {#            <li class="nav-item">#}
 {#                <a class="nav-link" href="{{ path('') }}">Villes</a>#}
 {#            </li>#}
@@ -19,7 +16,7 @@
                 <a class="nav-link" href="{{ path('main_home') }}">Accueil</a>
             </li>
 
-            {% if app.user %}
+            {% if is_granted("IS_AUTHENTICATED") %}
                 <li class="nav-item">
                   <a class="nav-link" href="{{ path('sorties_create') }}">Créer une sortie</a>
                  </li>
