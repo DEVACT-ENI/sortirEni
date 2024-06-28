@@ -95,20 +95,22 @@ class SortieRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function inscription(int $id, string $username): void
-    {
-        $sortie = $this->find($id);
-        $participant = $this->entityManager->getRepository(Participant::class)->findOneBy(['username' => $username]);
-        $sortie->addListInscrit($participant);
-        $this->entityManager->persist($sortie);
-        $this->entityManager->flush();
-    }
+    /**
+     * Cette méthode est utilisée pour gérer l'inscription ou la désinscription d'un participant à une sortie.
+     * Elle prend trois paramètres : l'id de la sortie, l'objet participant et un indicateur.
+     *
+     * @param int $idSortie L'id de la sortie à laquelle le participant veut s'inscrire ou se désinscrire.
+     * @param Participant $user Le participant qui veut s'inscrire ou se désinscrire à la sortie.
+     * @param string $flag Un indicateur pour indiquer si le participant veut s'inscrire ("-i") ou se désinscrire ("-d"). La valeur par défaut est "-i".
+     *
+     * @return void Cette méthode ne retourne rien. Elle modifie directement la sortie dans la base de données.
+     */
 
-    public function desinscription(int $id, string $getUserIdentifier): void
+    public function inscription(int $idSortie, Participant $user, string $flag = "-i") : void
     {
-        $sortie = $this->find($id);
-        $participant = $this->entityManager->getRepository(Participant::class)->findOneBy(['username' => $getUserIdentifier]);
-        $sortie->removeListInscrit($participant);
+        $sortie = $this->find($idSortie);
+        $flag === "-i" ? $sortie->addListInscrit($user) : null;
+        $flag === "-d" ? $sortie->removeListInscrit($user) : null;
         $this->entityManager->persist($sortie);
         $this->entityManager->flush();
     }
