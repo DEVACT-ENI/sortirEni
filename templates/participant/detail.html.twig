@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<img src="{{ asset('uploads/photos/' ~ participant.id ~ '.' ~ 'jpg') }}" alt="User photo">
+
+
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Username : {{ participant.username }}</h5>

@@ -23,14 +23,14 @@ class Sortie
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateHeureDebut = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Veuillez renseigner une duree pour la sortie !')]
     private ?string $duree = null;
 
-    #[Assert\GreaterThan(propertyPath: 'dateHeureDebut')]
+    #[Assert\LessThan(propertyPath: 'dateHeureDebut')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 

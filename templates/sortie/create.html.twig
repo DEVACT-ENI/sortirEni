@@ -6,7 +6,13 @@
 
     {{ form_start(sortieForm) }}
     {{ form_widget(sortieForm) }}
-    <button>Validate !</button>
+    <br>
+    {% if is_granted("PERM_BOUTTON_USER_CONNECTED") %}
+        <a href="{{ path('lieux_create') }}" class="btn btn-primary">Créer un nouveau lieu</a>
+    {% endif %}
+    <br>
+    <br>
+    <button class="btn btn-primary">Validate !</button>
     {{ form_end(sortieForm) }}
 
 
