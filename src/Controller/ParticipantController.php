@@ -46,7 +46,10 @@ class ParticipantController extends AbstractController
     #[Route('/desinscription-sortie/{id}', name: 'desinscription_sortie', methods: ['GET'])]
     public function desinscription(SortieRepository $sortieRepository, int $id): Response
     {
-        $sortieRepository->desinscription($id, $this->getUser()->getUserIdentifier());
+        /*
+         *
+         */
+        $sortieRepository->desinscription($id, $this->getUser());
 
         return $this->redirectToRoute('main_home');
     }

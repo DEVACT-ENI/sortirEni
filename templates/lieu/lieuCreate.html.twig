@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h2>Créer un nouveau lieu</h2>
+
+    {{ form_start(lieuForm) }}
+
+    {{ form_widget(lieuForm) }}
+    <button>Validate !</button>
+    {{ form_end(lieuForm)}}
+
+
+{% endblock %}
