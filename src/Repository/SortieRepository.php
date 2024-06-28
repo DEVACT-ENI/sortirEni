@@ -106,7 +106,7 @@ class SortieRepository extends ServiceEntityRepository
      * @return void Cette méthode ne retourne rien. Elle modifie directement la sortie dans la base de données.
      */
 
-    public function inscription(int $idSortie, Participant $user, string $flag = "-i") : void
+    public function inscriptionOrInvert(int $idSortie, Participant $user, string $flag = "-i") : void
     {
         $sortie = $this->find($idSortie);
         $flag === "-i" ? $sortie->addListInscrit($user) : null;
