@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Form\ModifProfilType;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
+use App\services\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -15,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class ParticipantController extends AbstractController
 {
     #[Route('/modif-profil/{id}', name: 'modif_profil', methods: ['GET', 'POST'])]
-    public function modifProfil(ParticipantRepository $participantRepository, Request $request,UserPasswordHasherInterface $hasher, int $id): Response
+    public function modifProfil(ParticipantRepository $participantRepository, Request $request, UserPasswordHasherInterface $hasher, FileUploader $fileUploader, int $id): Response
     {
         $participant = $participantRepository->find($id);
         $form = $this->createForm(ModifProfilType::class, $participant);
@@ -23,15 +25,28 @@ class ParticipantController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('password')->getData() != null)
-            $participant->setPassword($hasher->hashPassword(
-                $participant,
-                $form->get('password')->getData()));
+                $participant->setPassword($hasher->hashPassword(
+                    $participant,
+                    $form->get('password')->getData()));
+
+            /** @var UploadedFile $file */
+            $file = $form['photo']->getData();
+
+            if ($file) {
+                $fileName = $fileUploader->upload($file, (string)$participant->getId());
+
+                // Now you can use $fileName to display the image in your templates
+                // For example, you can store it in the session
+                $request->getSession()->set('user_photo', $fileName);
+            }
+
             $participantRepository->save($participant);
             return $this->redirectToRoute('main_home');
         }
 
         return $this->render('participant/modif-profil.html.twig', [
             'form' => $form->createView(),
+            'participant' => $participant,
         ]);
     }
 
