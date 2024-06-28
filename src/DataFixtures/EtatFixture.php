@@ -16,7 +16,7 @@ class EtatFixture extends Fixture implements FixtureGroupInterface, OrderedFixtu
 
     private function loadEtats(ObjectManager $manager): void
     {
-        $tabEtat = ["Créée", "Ouverte", "Clôturée", "Activité en cours", "Passée", "Annulée"];
+        $tabEtat = ["Créée", "Ouverte", "Clôturée", "Activité en cours", "Passée", "Annulée", "Historisée"];
         foreach ($tabEtat as $libelle) {
             $etat = new Etat();
             $etat->setLibelle($libelle);
