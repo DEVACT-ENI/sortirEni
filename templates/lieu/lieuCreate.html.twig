@@ -1,15 +1,29 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme lieuForm 'form_theme.html.twig' %}
+
+
 {% block body %}
 
+    <br>
     <h2>Créer un nouveau lieu</h2>
+    <br>
 
     {{ form_start(lieuForm) }}
 
-    {{ form_widget(lieuForm) }}
+    <div class="form-container">
+
+        {{ form_row(lieuForm.nom) }}
+        {{ form_row(lieuForm.rue) }}
+        {{ form_row(lieuForm.latitude) }}
+        {{ form_row(lieuForm.longitude) }}
+        {{ form_row(lieuForm.ville) }}
+
+    </div>
+
     <br>
     <button class="btn btn-primary">Validate !</button>
-    {{ form_end(lieuForm)}}
 
+    {{ form_end(lieuForm) }}
 
 {% endblock %}
