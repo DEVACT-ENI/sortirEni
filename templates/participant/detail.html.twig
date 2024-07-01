@@ -1,7 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<img src="{{ asset('uploads/photos/' ~ participant.id ~ '.' ~ 'jpg') }}" alt="User photo">
+
+{% if file_exists(realpath('uploads/photos/photos/' ~ participant.id ~ '.webp')) %}
+    <img src="{{ asset('uploads/photos/photos/' ~ participant.id ~ '.webp') }}" alt="User photo">
+{% else %}
+    <img src="{{asset('default.webp')}}" alt="Default User photo">
+{% endif %}
 
 
     <div class="card">

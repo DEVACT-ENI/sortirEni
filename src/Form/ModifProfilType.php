@@ -50,6 +50,7 @@ class ModifProfilType extends AbstractType
                 'label' => 'Photo',
                 'mapped' => false,
                 'required' => false,
+                'attr' => ['accept' => 'image/jpeg, image/png'],
             ]);
     }
 
