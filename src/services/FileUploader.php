@@ -15,9 +15,29 @@ class FileUploader
 
     public function upload(UploadedFile $file, string $fileName): string
     {
-        $fileName = $fileName . '.' . $file->guessExtension();
+        // Check if the file is an image
+        if (!in_array($file->getMimeType(), ['image/jpeg', 'image/png'])) {
+            throw new \Exception('Uniquement les images jpeg et png sont autorisées');
+        }
 
-        $file->move($this->targetDirectory, $fileName);
+        // Convert the image to webp format
+        $image = imagecreatefromstring(file_get_contents($file->getPathname()));
+        ob_start();
+        imagewebp($image);
+        $webpData = ob_get_contents();
+        ob_end_clean();
+
+        // Check if the uploads and photos directories exist, if not, create them
+        if (!file_exists($this->targetDirectory)) {
+            mkdir($this->targetDirectory, 0777, true);
+        }
+        if (!file_exists($this->targetDirectory . '/photos')) {
+            mkdir($this->targetDirectory . '/photos', 0777, true);
+        }
+
+        // Save the converted image to the photos directory
+        $fileName = $fileName . '.webp';
+        file_put_contents($this->targetDirectory . '/photos/' . $fileName, $webpData);
 
         return $fileName;
     }

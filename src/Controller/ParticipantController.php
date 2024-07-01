@@ -37,8 +37,6 @@ class ParticipantController extends AbstractController
             if ($file) {
                 $fileName = $fileUploader->upload($file, (string)$participant->getId());
 
-                // Now you can use $fileName to display the image in your templates
-                // For example, you can store it in the session
                 $request->getSession()->set('user_photo', $fileName);
             }
 

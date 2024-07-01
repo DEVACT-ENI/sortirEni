@@ -5,8 +5,12 @@
 {% block body %}
     <h1>Modifier mon profil</h1>
 
-    <img src="{{ asset('uploads/photos/' ~ participant.id ~ '.' ~ 'jpg') }}" alt="User photo">
-
+    {% if app.session.get('user_photo') is not null and file_exists(realpath('uploads/photos/photos/' ~ app.session.get('user_photo'))) %}
+        <img src="{{ asset('uploads/photos/photos/' ~ app.session.get('user_photo')) }}" alt="User photo">
+    {% else %}
+        <img src="{{asset('default.webp')}}" alt="Default User photo">
+    {% endif %}
+s
     {{ form_start(form) }}
         {{ form_row(form.username) }}
         {{ form_row(form.prenom) }}
