@@ -39,7 +39,7 @@ class Sortie
     private ?int $nbInscriptionMax = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Assert\Range(notInRangeMessage: 'Le texte doit contenir entre {{ min }} et {{ max}} caractères', min: 2, max: 255)]
+    #[Assert\Length(min: 2, max: 255, maxMessage: 'Le texte doit contenir entre {{ min }} et {{ max }} caractères')]
     private ?string $infoSortie = null;
 
     #[ORM\ManyToOne]

@@ -1,24 +1,41 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme sortieForm 'form/form_theme.html.twig' %}
+
 {% block body %}
 
+    <br>
     <h2>{{ Title }}</h2>
+    <br>
 
     {{ form_start(sortieForm) }}
-    {{ form_widget(sortieForm) }}
-    <br>
+
+    <div class="form-container">
+
+        {{ form_row(sortieForm.nom) }}
+        {{ form_row(sortieForm.dateHeureDebut) }}
+        {{ form_row(sortieForm.duree) }}
+        {{ form_row(sortieForm.dateLimiteInscription) }}
+        {{ form_row(sortieForm.nbInscriptionMax) }}
+        {{ form_row(sortieForm.infoSortie) }}
+        {{ form_row(sortieForm.organisateur) }}
+        {{ form_row(sortieForm.campus) }}
+        {{ form_row(sortieForm.lieu) }}
+
+    </div>
+
+
     {% if is_granted("PERM_BOUTTON_USER_CONNECTED") %}
         <a href="{{ path('lieux_create') }}" class="btn btn-primary">Créer un nouveau lieu</a>
     {% endif %}
     <br>
     <br>
     <button class="btn btn-primary">Validate !</button>
+
     {{ form_end(sortieForm) }}
 
 
 {% endblock %}
 
-{% block title %}
 
-{% endblock %}
 
