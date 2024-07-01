@@ -2,11 +2,11 @@
 
 {% block body %}
 
-    {% if app.session.get('user_photo') is not null and file_exists(realpath('uploads/photos/photos/' ~ app.session.get('user_photo'))) %}
-        <img src="{{ asset('uploads/photos/photos/' ~ app.session.get('user_photo')) }}" alt="User photo">
-    {% else %}
-        <img src="{{asset('default.webp')}}" alt="Default User photo">
-    {% endif %}
+{% if file_exists(realpath('uploads/photos/photos/' ~ participant.id ~ '.webp')) %}
+    <img src="{{ asset('uploads/photos/photos/' ~ participant.id ~ '.webp') }}" alt="User photo">
+{% else %}
+    <img src="{{asset('default.webp')}}" alt="Default User photo">
+{% endif %}
 
 
     <div class="card">
