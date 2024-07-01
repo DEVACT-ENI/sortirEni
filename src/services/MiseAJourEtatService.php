@@ -2,6 +2,7 @@
 
 namespace App\services;
 
+use App\Entity\Sortie;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use DateInterval;
@@ -10,7 +11,7 @@ class MiseAJourEtatService
 {
     public function __construct(private readonly SortieRepository $sortieRepository, private readonly EtatRepository $etatRepository){}
 
-    public function miseAJourEtatSortie(): void
+    public function miseAJourEtatSortie(?array $sortie): void
     {
         $sorties = $this->sortieRepository->findAll();
 
@@ -24,7 +25,6 @@ class MiseAJourEtatService
             $dateDebutDuree->modify('+' . $sortie->getDuree() . ' minutes');
             $nbInscriptions = count($sortie->getListInscrit());
             $maxInscriptions = $sortie->getNbInscriptionMax();
-            $duree = $sortie->getDuree();
 
             if ($sortie->getEtat()->getLibelle() != 'Créée') {
                 if ($dateDebut < $dateActuelleLessOneMonth) {
@@ -38,7 +38,8 @@ class MiseAJourEtatService
                 } else {
                     $etat = $this->etatRepository->findOneBy(['libelle' => 'Ouverte']);
                 }
-            }
+            } else
+                $etat = $this->etatRepository->findOneBy(['libelle' => 'Créée']);
             $sortie->setEtat($etat);
             $this->sortieRepository->save($sortie);
         }

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Form\Modeles\FormFilterMainModele;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,33 +20,7 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    //    /**
-    //     * @return Sortie[] Returns an array of Sortie objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Sortie
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
-
-
-    public function searchSorties($campus, $keyword, $dateDebut, $dateFin, $organisateur, $inscrit, $nonInscrit, $sortiesPassees, ?UserInterface $user)
+    public function searchSorties(?FormFilterMainModele $formFilter, ?UserInterface $user, string $flag = "-a") : ?array
     {
         $qb = $this->createQueryBuilder('s')
             ->innerJoin('s.etat', 'e')
@@ -55,52 +30,43 @@ class SortieRepository extends ServiceEntityRepository
             ->innerJoin('l.ville', 'v')
             ->leftJoin('s.listInscrit', 'sp');
 
-        if ($campus) {
-            $qb->andWhere('c.id = :campus')
-                ->setParameter('campus', $campus);
-        }
+        $qb->andWhere('e.code != :code')
+            ->setParameter('code', 'HIS');
 
-        if ($keyword) {
-            $qb->andWhere('s.nom LIKE :keyword')
-                ->setParameter('keyword', '%' . $keyword . '%');
-        }
+        if ($flag === "-a")
+            return $qb->getQuery()->getResult();
 
-        if ($dateDebut) {
-            $qb->andWhere('s.dateHeureDebut >= :dateDebut')
-                ->setParameter('dateDebut', $dateDebut);
-        }
+        if ($flag !== "-p")
+            return null;
 
-        if ($dateFin) {
-            $qb->andWhere('s.dateHeureDebut <= :dateFin')
-                ->setParameter('dateFin', $dateFin);
-        }
+        if ($formFilter->getCampus())
+            $qb->andWhere('c.id = :campus')->setParameter('campus', $formFilter->getCampus());
 
-        if ($organisateur && $user) {
-            $qb->andWhere('o = :user')
-                ->setParameter('user', $user);
-        }
+        if ($formFilter->getKeyword())
+            $qb->andWhere('s.nom LIKE :keyword')->setParameter('keyword', '%' . $formFilter->getKeyword() . '%');
 
-        if ($inscrit && $user) {
-            $qb->andWhere(':user MEMBER OF s.listInscrit')
-                ->setParameter('user', $user);
-        }
+        if ($formFilter->getDateDebut())
+            $qb->andWhere('s.dateHeureDebut >= :dateDebut')->setParameter('dateDebut', $formFilter->getDateDebut());
 
-        if ($nonInscrit && $user) {
-            $qb->andWhere(':user NOT MEMBER OF s.listInscrit')
-                ->setParameter('user', $user);
-        }
+        if ($formFilter->getDateFin())
+            $qb->andWhere('s.dateHeureDebut <= :dateFin')->setParameter('dateFin', $formFilter->getDateFin());
 
+        if ($formFilter->getOrganisateur() && $user)
+            $qb->andWhere('o = :user')->setParameter('user', $user);
 
-        if ($sortiesPassees) {
-            $qb->andWhere('e.libelle = :sortiesPassees')
-                ->setParameter('sortiesPassees', 'Passée');
-        }
+        if ($formFilter->getInscrit() && $user)
+            $qb->andWhere(':user MEMBER OF s.listInscrit')->setParameter('user', $user);
+
+        if ($formFilter->getNonInscrit() && $user)
+            $qb->andWhere(':user NOT MEMBER OF s.listInscrit')->setParameter('user', $user);
+
+        if ($formFilter->getSortiesPassees())
+            $qb->andWhere('e.code = :codePasse')->setParameter('codePasse', 'PAS');
 
         return $qb->getQuery()->getResult();
     }
 
-
-        /**
+    /**
      * Cette méthode est utilisée pour gérer l'inscription ou la désinscription d'un participant à une sortie.
      * Elle prend trois paramètres : l'id de la sortie, l'objet participant et un indicateur.
      *

@@ -38,7 +38,6 @@ class SortieType extends AbstractType
                 ],
                 'required' => false,
             ])
-
             ->add('organisateur', EntityType::class, [
                 'class' => Participant::class,
                 'choice_label' => 'nom',
