@@ -20,15 +20,30 @@
         {{ form_row(sortieForm.infoSortie) }}
         {{ form_row(sortieForm.organisateur) }}
         {{ form_row(sortieForm.campus) }}
-        {{ form_row(sortieForm.lieu) }}
+
+       <div class="form-container-creerLieu">
+
+           <div id="form-label-creerLieu">
+               {{ form_label(sortieForm.lieu) }}
+               {{ form_errors(sortieForm.lieu) }}
+           </div>
+
+           <div class="form-creerLieu">
+                <div class="label-lieu">
+                     {{ form_widget(sortieForm.lieu) }}
+                </div>
+
+                <div>
+                     {% if is_granted("PERM_BOUTTON_USER_CONNECTED") %}
+                          <a href="{{ path('lieux_create') }}" class="btn-creer" alt="Créer un nouveau lieu">+</a>
+                     {% endif %}
+                </div>
+
+           </div>
+
+       </div>
 
     </div>
-
-
-    {% if is_granted("PERM_BOUTTON_USER_CONNECTED") %}
-        <a href="{{ path('lieux_create') }}" class="btn btn-primary">Créer un nouveau lieu</a>
-    {% endif %}
-    <br>
     <br>
     <button class="btn btn-primary">Validate !</button>
 
