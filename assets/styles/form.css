@@ -46,12 +46,57 @@ h2{
     border: 1px solid #ccc;
 }
 
+.form-container-creerLieu {
+    width: 600px;
+}
+
+.form-creerLieu {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#form-label-creerLieu {
+    width: 100%;
+    text-align: left;
+    padding-left: 8px;
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
+.label-lieu {
+    width: 92%;
+}
+
 .form-row .form-errors {
     color: red;
     margin-left: 5px;
     text-align: left;
 }
 
+.btn-creer {
+    text-decoration : none;
+    outline-width: medium;
+    color:black;
+    border: 1px solid #ccc;
+    background-color: lightgrey;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 11px;
+    padding-left: 13px;
+    padding-right:13px;
+    margin-top: 30px;
+    width:10%;
+
+}
+
 button.btn{
     margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.form-control{
+    min-height: 45px;
+    max-height: 45px;
 }

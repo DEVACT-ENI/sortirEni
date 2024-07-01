@@ -56,7 +56,6 @@ class SortieType extends AbstractType
             ->add('lieu', EntityType::class, [
                 'class' => Lieu::class,
                 'choice_label' => 'nom',
-                //TODO modifier la valeur du lieu pour niveau 2 ou 3
             ])
         ;
     }
