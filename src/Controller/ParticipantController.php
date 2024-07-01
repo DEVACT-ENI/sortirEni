@@ -12,14 +12,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted("IS_AUTHENTICATED")]
 #[Route('/participants', name: 'participants_')]
 class ParticipantController extends AbstractController
 {
-    #[Route('/modif-profil/{id}', name: 'modif_profil', methods: ['GET', 'POST'])]
-    public function modifProfil(ParticipantRepository $participantRepository, Request $request, UserPasswordHasherInterface $hasher, FileUploader $fileUploader, int $id): Response
+    #[Route('/modif-profil', name: 'modif_profil', methods: ['GET', 'POST'])]
+    public function modifProfil(ParticipantRepository $participantRepository, Request $request, UserPasswordHasherInterface $hasher, FileUploader $fileUploader): Response
     {
-        $participant = $participantRepository->find($id);
+        $participant = $this->getUser();
         $form = $this->createForm(ModifProfilType::class, $participant);
         $form->handleRequest($request);
 
@@ -53,7 +55,7 @@ class ParticipantController extends AbstractController
     #[Route('/inscription-sortie/{id}', name: 'inscription_sortie', methods: ['GET'])]
     public function inscription(SortieRepository $sortieRepository, int $id): Response
     {
-        $sortieRepository->inscription($id, $this->getUser()->getUserIdentifier());
+        $sortieRepository->inscriptionOrInvert($id, $this->getUser(), "-i");
 
         return $this->redirectToRoute('main_home');
     }
@@ -61,10 +63,7 @@ class ParticipantController extends AbstractController
     #[Route('/desinscription-sortie/{id}', name: 'desinscription_sortie', methods: ['GET'])]
     public function desinscription(SortieRepository $sortieRepository, int $id): Response
     {
-        /*
-         *
-         */
-        $sortieRepository->desinscription($id, $this->getUser());
+        $sortieRepository->inscriptionOrInvert($id, $this->getUser(), "-d");
 
         return $this->redirectToRoute('main_home');
     }

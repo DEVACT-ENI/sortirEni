@@ -68,7 +68,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     #[Assert\Regex(
         pattern : "#^(\+33|0)[67][0-9]{8}$#",
-        message: "Le numéro de téléphone n'est pas valide."
+        message: "Le numéro de téléphone n'est pas valide. Il doit être au format 06 XX XX XX XX ou +33 7 XX XX XX XX."
     )]
     private ?string $telephone = null;
 

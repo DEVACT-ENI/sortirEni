@@ -10,6 +10,7 @@ use App\Entity\Sortie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,8 +28,16 @@ class SortieType extends AbstractType
             ->add('dateLimiteInscription', DateTimeType::class, [
                 'widget' => 'single_text',
             ])
-            ->add('nbInscriptionMax')
-            ->add('infoSortie', TextType::class)
+            ->add('nbInscriptionMax', NumberType::class, [
+                'html5' => true,
+            ])
+            ->add('infoSortie', TextType::class, [
+                'label' => 'Description',
+                'attr' => [
+                    'placeholder' => 'Description de la sortie',
+                ],
+                'required' => false,
+            ])
 
             ->add('organisateur', EntityType::class, [
                 'class' => Participant::class,

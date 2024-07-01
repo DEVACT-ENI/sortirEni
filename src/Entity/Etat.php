@@ -16,6 +16,9 @@ class Etat
     #[ORM\Column(length: 20)]
     private ?string $libelle = null;
 
+    #[ORM\Column(length: 5)]
+    private ?string $code = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +32,18 @@ class Etat
     public function setLibelle(string $libelle): static
     {
         $this->libelle = $libelle;
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): static
+    {
+        $this->code = $code;
 
         return $this;
     }

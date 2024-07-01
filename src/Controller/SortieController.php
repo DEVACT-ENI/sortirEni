@@ -12,10 +12,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted("IS_AUTHENTICATED")]
 #[Route('/sorties', name: 'sorties_')]
 class SortieController extends AbstractController
 {
+
     #[Route('/create', name: 'create')]
     #[Route('/update/{id}', name: 'update')]
     public function create(
@@ -36,7 +39,7 @@ class SortieController extends AbstractController
             $user = $this->getUser();
             $sortie->setOrganisateur($user);
             $sortie->addListInscrit($user);
-            $sortie->setEtat($etatRepository->find(1));
+            $sortie->setEtat($etatRepository->findOneBy(['code' => 'CRT']));
             $sortie->setDateHeureDebut(new \DateTime());
             $sortie->setDateLimiteInscription(new \DateTime());
         }
@@ -94,7 +97,7 @@ class SortieController extends AbstractController
 
         $sortie->setInfoSortie($motif);
 
-        $etatAnnule = $etatRepository->findOneBy(['libelle' => 'Annulée']);
+        $etatAnnule = $etatRepository->findOneBy(['code' => 'ANN']);
         if (!$etatAnnule) {
             $this->addFlash('error', 'Etat "Annulée" pas trouvé');
             return $this->redirectToRoute('main_home');
