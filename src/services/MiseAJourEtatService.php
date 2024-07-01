@@ -11,10 +11,8 @@ class MiseAJourEtatService
 {
     public function __construct(private readonly SortieRepository $sortieRepository, private readonly EtatRepository $etatRepository){}
 
-    public function miseAJourEtatSortie(?array $sortie): void
+    public function miseAJourEtatSortie(?array $sorties): void
     {
-        $sorties = $this->sortieRepository->findAll();
-
         foreach ($sorties as $sortie) {
             $dateActuelle = new \DateTime();
             $dateActuelleLessOneMonth = clone $dateActuelle;
