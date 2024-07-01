@@ -26,8 +26,7 @@ class MainController extends AbstractController
         $nonInscrit = $request->query->get('nonInscrit');
         $sortiesPassees = $request->query->get('sortiesPassees');
 
-        $sorties = $sortieRepository->searchSorties($campus, $keyword, $dateDebut, $dateFin, $organisateur, $inscrit, $nonInscrit, $sortiesPassees);
-        $campuses = $campusRepository->findAll();
+        $sorties = $sortieRepository->searchSorties($campus, $keyword, $dateDebut, $dateFin, $organisateur, $inscrit, $nonInscrit, $sortiesPassees, $this->getUser());        $campuses = $campusRepository->findAll();
 
         return $this->render('main/home.html.twig', [
             'sorties' => $sorties,

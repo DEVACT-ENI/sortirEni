@@ -43,12 +43,20 @@ class SortieRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-    public function searchSorties($campus, $keyword, $dateDebut, $dateFin, $organisateur, $inscrit, $nonInscrit, $sortiesPassees)
+
+
+    public function searchSorties($campus, $keyword, $dateDebut, $dateFin, $organisateur, $inscrit, $nonInscrit, $sortiesPassees, ?UserInterface $user)
     {
-        $qb = $this->createQueryBuilder('s');
+        $qb = $this->createQueryBuilder('s')
+            ->innerJoin('s.etat', 'e')
+            ->innerJoin('s.organisateur', 'o')
+            ->innerJoin('s.campus', 'c')
+            ->innerJoin('s.lieu', 'l')
+            ->innerJoin('l.ville', 'v')
+            ->leftJoin('s.listInscrit', 'sp');
 
         if ($campus) {
-            $qb->andWhere('s.campus = :campus')
+            $qb->andWhere('c.id = :campus')
                 ->setParameter('campus', $campus);
         }
 
@@ -57,45 +65,42 @@ class SortieRepository extends ServiceEntityRepository
                 ->setParameter('keyword', '%' . $keyword . '%');
         }
 
-        if ($dateDebut && $dateFin) {
-            $qb->andWhere('s.dateHeureDebut BETWEEN :dateDebut AND :dateFin')
-                ->setParameter('dateDebut', $dateDebut)
+        if ($dateDebut) {
+            $qb->andWhere('s.dateHeureDebut >= :dateDebut')
+                ->setParameter('dateDebut', $dateDebut);
+        }
+
+        if ($dateFin) {
+            $qb->andWhere('s.dateHeureDebut <= :dateFin')
                 ->setParameter('dateFin', $dateFin);
         }
 
         if ($organisateur) {
-            $qb->join('s.organisateur', 'o')
-                ->andWhere('o.username = :organisateur')
+            $qb->andWhere('o.username = :organisateur')
                 ->setParameter('organisateur', $organisateur);
         }
 
-        if ($inscrit) {
-            $qb->join('s.listInscrit', 'p')
-                ->andWhere('p = :inscrit')
-                ->setParameter('inscrit', $inscrit);
+        if ($inscrit && $user) {
+            $qb->andWhere(':user MEMBER OF s.listInscrit')
+                ->setParameter('user', $user);
         }
 
-
-        if ($nonInscrit) {
-            $qb->leftJoin('s.listInscrit', 'p')
-                ->andWhere(':nonInscrit NOT MEMBER OF s.listInscrit')
-                ->setParameter('nonInscrit', $nonInscrit);
+        if ($nonInscrit && $user) {
+            $qb->andWhere(':user NOT MEMBER OF s.listInscrit')
+                ->setParameter('user', $user);
         }
-
 
 
         if ($sortiesPassees) {
-            $qb->andWhere('s.dateHeureDebut < :now')
-                ->setParameter('now', new \DateTime());
+            $qb->andWhere('e.libelle = :sortiesPassees')
+                ->setParameter('sortiesPassees', 'Passée');
         }
 
-
-        $qb->AndWhere('s.etat != :etat')
-            ->setParameter('etat', '7');
         return $qb->getQuery()->getResult();
     }
 
-    /**
+
+        /**
      * Cette méthode est utilisée pour gérer l'inscription ou la désinscription d'un participant à une sortie.
      * Elle prend trois paramètres : l'id de la sortie, l'objet participant et un indicateur.
      *
