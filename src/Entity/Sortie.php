@@ -30,7 +30,7 @@ class Sortie
     #[Assert\NotBlank(message: 'Veuillez renseigner une duree pour la sortie !')]
     private ?string $duree = null;
 
-    #[Assert\LessThan(propertyPath: 'dateHeureDebut', message: "La date limite d'inscription doit être inférieure à la date de début")]
+    #[Assert\LessThan(propertyPath: 'dateHeureDebut', message: "La date limite d'inscription doit être inférieure à la date de début !")]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
