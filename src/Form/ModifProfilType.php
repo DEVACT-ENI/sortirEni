@@ -48,8 +48,8 @@ class ModifProfilType extends AbstractType
             ])
             ->add('photo', FileType::class, [
                 'label' => 'Photo',
-                'mapped' => false, // This field is not associated with any entity property
-                'required' => false, // This field is not required
+                'mapped' => false,
+                'required' => false,
             ]);
     }
 

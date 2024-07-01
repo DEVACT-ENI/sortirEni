@@ -75,9 +75,9 @@ class SortieRepository extends ServiceEntityRepository
                 ->setParameter('dateFin', $dateFin);
         }
 
-        if ($organisateur) {
-            $qb->andWhere('o.username = :organisateur')
-                ->setParameter('organisateur', $organisateur);
+        if ($organisateur && $user) {
+            $qb->andWhere('o = :user')
+                ->setParameter('user', $user);
         }
 
         if ($inscrit && $user) {

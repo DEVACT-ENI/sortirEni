@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\SearchSortieType;
 use App\Repository\CampusRepository;
 use App\Repository\SortieRepository;
 use App\services\MiseAJourEtatService;
@@ -16,21 +17,22 @@ class MainController extends AbstractController
     #[Route('/', name: 'main_home')]
     public function home(Request $request, SortieRepository $sortieRepository, CampusRepository $campusRepository, MiseAJourEtatService $miseAJourEtatService): Response
     {
-        $miseAJourEtatService->miseAJourEtatSortie();
-        $campus = $request->query->get('campus');
-        $keyword = $request->query->get('keyword');
-        $dateDebut = $request->query->get('dateDebut');
-        $dateFin = $request->query->get('dateFin');
-        $organisateur = $request->query->get('organisateur');
-        $inscrit = $request->query->get('inscrit');
-        $nonInscrit = $request->query->get('nonInscrit');
-        $sortiesPassees = $request->query->get('sortiesPassees');
+        $form = $this->createForm(SearchSortieType::class);
+        $form->handleRequest($request);
 
-        $sorties = $sortieRepository->searchSorties($campus, $keyword, $dateDebut, $dateFin, $organisateur, $inscrit, $nonInscrit, $sortiesPassees, $this->getUser());        $campuses = $campusRepository->findAll();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $sorties = $sortieRepository->searchSorties($data['campus'], $data['keyword'], $data['dateDebut'], $data['dateFin'], $data['organisateur'], $data['inscrit'], $data['nonInscrit'], $data['sortiesPassees'], $this->getUser());
+        } else {
+            $sorties = $sortieRepository->findAll();
+        }
+
+        $campuses = $campusRepository->findAll();
 
         return $this->render('main/home.html.twig', [
             'sorties' => $sorties,
             'campuses' => $campuses,
+            'form' => $form->createView(),
         ]);
     }
 
