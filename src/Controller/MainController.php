@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\Modeles\FormFilterMainModele;
 use App\Form\SearchSortieType;
 use App\Repository\CampusRepository;
 use App\Repository\SortieRepository;
@@ -17,16 +18,20 @@ class MainController extends AbstractController
     #[Route('/', name: 'main_home')]
     public function home(Request $request, SortieRepository $sortieRepository, CampusRepository $campusRepository, MiseAJourEtatService $miseAJourEtatService): Response
     {
-        $form = $this->createForm(SearchSortieType::class);
+        $formFilter = new FormFilterMainModele();
+        $form = $this->createForm(SearchSortieType::class, $formFilter);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $sorties = $sortieRepository->searchSorties($data['campus'], $data['keyword'], $data['dateDebut'], $data['dateFin'], $data['organisateur'], $data['inscrit'], $data['nonInscrit'], $data['sortiesPassees'], $this->getUser());
-        } else {
-            $sorties = $sortieRepository->findAll();
+        if ($form->isSubmitted())
+            if ($form->isValid())
+                $sorties = $sortieRepository->searchSorties( $formFilter, $this->getUser(), "-p");
+            else
+                $sorties = null;
+        else {
+            $sorties = $sortieRepository->searchSorties(null, null, "-a");
         }
 
+        $miseAJourEtatService->miseAJourEtatSortie($sorties);
         $campuses = $campusRepository->findAll();
 
         return $this->render('main/home.html.twig', [
@@ -48,5 +53,11 @@ class MainController extends AbstractController
         return $this->render('main/viewsortie.html.twig', [
             'sortie' => $sortie,
         ]);
+    }
+
+    #[Route('/test', name: 'sortie_test')]
+    public function test(): Response
+    {
+        return $this->render('main/test.html.twig');
     }
 }

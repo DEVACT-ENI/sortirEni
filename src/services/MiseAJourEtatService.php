@@ -2,6 +2,7 @@
 
 namespace App\services;
 
+use App\Entity\Sortie;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use DateInterval;
@@ -10,10 +11,8 @@ class MiseAJourEtatService
 {
     public function __construct(private readonly SortieRepository $sortieRepository, private readonly EtatRepository $etatRepository){}
 
-    public function miseAJourEtatSortie(): void
+    public function miseAJourEtatSortie(?array $sorties): void
     {
-        $sorties = $this->sortieRepository->findAll();
-
         foreach ($sorties as $sortie) {
             $dateActuelle = new \DateTime();
             $dateActuelleLessOneMonth = clone $dateActuelle;
@@ -24,22 +23,21 @@ class MiseAJourEtatService
             $dateDebutDuree->modify('+' . $sortie->getDuree() . ' minutes');
             $nbInscriptions = count($sortie->getListInscrit());
             $maxInscriptions = $sortie->getNbInscriptionMax();
-            $duree = $sortie->getDuree();
 
-            if ($sortie->getEtat()->getLibelle() != 'Créée') {
+            if ($sortie->getEtat()->getCode() != 'CRT' && $sortie->getEtat()->getCode() != 'ANN') {
                 if ($dateDebut < $dateActuelleLessOneMonth) {
-                    $etat = $this->etatRepository->findOneBy(['libelle' => 'Historisée']);
+                    $etat = $this->etatRepository->findOneBy(['code' => 'HIS']);
                 } else if ($dateDebutDuree < $dateActuelle) {
-                    $etat = $this->etatRepository->findOneBy(['libelle' => 'Passée']);
+                    $etat = $this->etatRepository->findOneBy(['code' => 'PAS']);
                 } else if ($dateDebut < $dateActuelle) {
-                    $etat = $this->etatRepository->findOneBy(['libelle' => 'Activité en cours']);
+                    $etat = $this->etatRepository->findOneBy(['code' => 'ACN']);
                 } else if ($dateLimite < $dateActuelle || $nbInscriptions >= $maxInscriptions) {
-                    $etat = $this->etatRepository->findOneBy(['libelle' => 'Clôturée']);
+                    $etat = $this->etatRepository->findOneBy(['code' => 'CLO']);
                 } else {
-                    $etat = $this->etatRepository->findOneBy(['libelle' => 'Ouverte']);
+                    $etat = $this->etatRepository->findOneBy(['code' => 'OPN']);
                 }
+                $sortie->setEtat($etat);
             }
-            $sortie->setEtat($etat);
             $this->sortieRepository->save($sortie);
         }
     }

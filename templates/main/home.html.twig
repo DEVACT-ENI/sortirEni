@@ -2,6 +2,11 @@
 
 {% block title %}Liste des sorties{% endblock %}
 
+{% block stylesheets %}
+{#    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">#}
+    <link rel="stylesheet" href="{{ asset('styles/test.css') }}">
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <h2 class="my-3">Date du jour : {{ 'now'|date('d/m/Y') }}</h2>
@@ -13,71 +18,129 @@
 
         <h2 class="my-3">Filtrer les sorties</h2>
         {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <button type="submit">Search</button>
+        {{ form_widget(form) }}
+        <button type="submit">Search</button>
         {{ form_end(form) }}
 
-        <h2 class="my-3">Liste des sorties</h2>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Nom de la sortie</th>
-                <th>Date de la sortie</th>
-                <th>Cloture</th>
-                <th>Inscrits/places</th>
-                <th>Etat</th>
-                {% if app.user %}
-                    <th>Inscrit</th>
-                {% endif %}
-                <th>Organisateur</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for sortie in sorties %}
-                <tr>
-                    <td>{{ sortie.nom }}</td>
-                    <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
-                    <td>{{ sortie.dateLimiteInscription|date('d/m/Y H:i') }}</td>
-                    <td>{{ sortie.listInscrit.count }}/{{ sortie.nbInscriptionMax }}</td>
-                    <td>{{ sortie.etat.libelle }}</td>
-                    {#                     affiche une croix si l'utilisateur connecté est inscrit à la sortie et un vide sinon #}
-                    {% if is_granted("IS_AUTHENTICATED") %}
-                        <td>{% if sortie.listInscrit.contains(app.user) %}X{% endif %}</td>
-                    {% endif %}
-                    <td>
-                        <a href="{{ path('participants_detail', {'id': sortie.organisateur.id }) }}">{{ sortie.organisateur.username }}</a>
-                    </td>
-                    <td>
-                        {% if is_granted("PERM_BOUTTON_AFFICHER", sortie) %}
-                        <a href="{{ path('sortie_view', {'id': sortie.id}) }}">Afficher</a>
-                        {% endif %}
-                        {% if is_granted("PERM_BOUTTON_MODIFIER", sortie) %}
-                            - <a href="{{ path('sorties_update', {'id': sortie.id}) }}">Modifier</a>
-                        {% endif %}
-                        {% if is_granted("PERM_BOUTTON_PUBLIER", sortie) %}
-                            - <a href="{{ path('main_home', {'id': sortie.id}) }}">Publier</a>
-                        {% endif %}
-                        {% if is_granted("PERM_BOUTTON_ANNULER", sortie) %}
-                            - <a href="{{ path('sorties_annuler_form', {'id': sortie.id}) }}">Annuler</a>
-                        {% endif %}
-                        {% if is_granted("PERM_BOUTTON_DESINSCRIPTION", sortie) %}
-                            - <a href="{{ path('participants_desinscription_sortie', {'id': sortie.id}) }}">Se désister</a>
-                        {% endif %}
-                        {% if is_granted("PERM_BOUTTON_INSCRIPTION", sortie) %}
-                            - <a href="{{ path('participants_inscription_sortie', {'id': sortie.id}) }}">S'inscrire</a>
-                        {% endif %}
-                        {% if is_granted("PERM_BOUTTON_AFFICHER", sortie) == false %}
-                            <a href="{{ path('app_login') }}">Connexion nécessaire</a>
-                        {% endif %}
+        {% for sortie in sorties %}
+            <div class="card mt-5 pt-2 active pb-0 px-3 shadow-sm p-3 mb-5 bg-white rounded">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-12 ">
+                            <h4 class="card-title "><b>{{ sortie.nom }}</b></h4>
+                        </div>
+                        <div class="col">
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                <p class="card-text text-muted small ">
+                                    <img src="https://img.icons8.com/metro/26/000000/star.png" class="mr-1 " width="19"
+                                         height="19" id="star" alt="">
+                                    <span class="vl mr-2 ml-0"></span>
+                                    <span>{{ sortie.etat.libelle }}</span>
+                                    <span class="vl ml-1 mr-2 "></span>
+                                    <span>Organisé par</span>
+                                    <span class="font-weight-bold">
+                                        <a href="{{ path('participants_detail', {'id': sortie.organisateur.id }) }}"><strong>{{ sortie.organisateur.username }}</strong></a>
+                                    </span>
+                                    <span>, la sortie se déroulera le <strong>{{ sortie.dateHeureDebut|format_datetime('full', 'short', locale='fr') }}</strong></span>
+                                    <span class="vl ml-1 mr-2 "></span>
+                                    <span>Les incriptions prendront fin le <strong>{{ sortie.dateLimiteInscription|format_datetime('full', 'short', locale='fr') }}</strong></span>
+                                </p>
+                            </h6>
+                        </div>
+                    </div>
+                </div>
 
-                    </td>
+                <div class="card-footer bg-white px-0 ">
+                    <div class="row">
+                        <div class=" col-md-auto ">
+                            <span>{{ sortie.listInscrit.count }}/{{ sortie.nbInscriptionMax }}</span>
+                            <span class="vl ml-3"></span>
+                            {% if is_granted("PERM_BOUTTON_AFFICHER", sortie) %}
+                                <a href="{{ path('sortie_view', {'id': sortie.id}) }}"
+                                   class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                    <img src="{{ asset('images/logoOeil.svg') }}" width="19" height="19"
+                                         alt="Logo afficher">
+                                    <small>Afficher</small>
+                                </a>
+                            {% endif %}
+                            {% if is_granted("PERM_BOUTTON_MODIFIER", sortie) %}
+                                <a href="{{ path('sorties_update', {'id': sortie.id}) }}"
+                                   class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                    <img src="{{ asset('images/logoModifier.svg') }}" width="19" height="19"
+                                         alt="Logo modifier">
+                                    <small>Modifier</small>
+                                </a>
+                            {% endif %}
+                            {% if is_granted("PERM_BOUTTON_PUBLIER", sortie) %}
+                                <a href="{{ path('sorties_publier', {'id': sortie.id}) }}"
+                                   onclick="return confirm('Êtes-vous sur de vouloir publier cette sortie ?')"
+                                   class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                    <img src="{{ asset('images/logoPublier.svg') }}" width="19" height="19"
+                                         alt="Logo publier">
+                                    <small>Publier</small>
+                                </a>
+                            {% endif %}
+                            {% if is_granted("PERM_BOUTTON_ANNULER", sortie) %}
+                                <a href="{{ path('sorties_annuler_form', {'id': sortie.id}) }}"
+                                   onclick="return confirm('Êtes-vous sur de vouloir annuler cette sortie ?')"
+                                   class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                    <img src="{{ asset('images/logoAnnuler.svg') }}" width="19" height="19"
+                                         alt="Logo annuler">
+                                    <small>Annuler</small>
+                                </a>
+                            {% endif %}
+                            {% if is_granted("PERM_BOUTTON_AFFICHER", sortie) == false %}
+                                <a href="{{ path('app_login') }}"
+                                   class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                    <small>Connexion nécessaire</small>
+                                </a>
+                            {% endif %}
 
-                </tr>
-            {% endfor %}
+                            <span class="vl ml-3"></span>
+                        </div>
 
-            </tbody>
-        </table>
+                        <div class="col-md-auto ">
+                            <ul class="list-inline">
+                                {% for participant in sortie.listInscrit %}
+                                    <li class="list-inline-item">
+                                        <a href="{{ path('participants_detail', {'id': participant.id }) }}">
+                                            {% if file_exists(realpath('uploads/photos/photos/' ~ participant.id ~ '.webp')) %}
+                                                <img src="{{ asset('uploads/photos/photos/' ~ participant.id ~ '.webp') }}"
+                                                     class="rounded-circle img-fluid test" width="35" height="35"
+                                                     alt="User photo" title="{{ participant.username }}" >
+                                            {% else %}
+                                                <img src="{{ asset('default.webp') }}" class="rounded-circle img-fluid test"
+                                                     width="35" height="35" alt="Default User photo" title="{{ participant.username }}">
+                                            {% endif %}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                                {% if is_granted("PERM_BOUTTON_DESINSCRIPTION", sortie) %}
+                                    <li class="list-inline-item">
+                                        <a href="{{ path('participants_desinscription_sortie', {'id': sortie.id}) }}"
+                                           class="btn btn-outlined btn-black text-muted bg-transparent"
+                                           data-wow-delay="0.7s">
+                                            <img src="https://img.icons8.com/ios/50/000000/minus.png" width="30"
+                                                 height="30 " class="more" alt="Désinscription">
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                {% if is_granted("PERM_BOUTTON_INSCRIPTION", sortie) %}
+                                    <li class="list-inline-item">
+                                        <a href="{{ path('participants_inscription_sortie', {'id': sortie.id}) }}"
+                                           class="btn btn-outlined btn-black text-muted bg-transparent"
+                                           data-wow-delay="0.7s">
+                                                <img src="https://img.icons8.com/ios/50/000000/plus.png" width="30"
+                                                     height="30 " class="more" alt="Inscription">
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
 
         {% if is_granted("PERM_BOUTTON_USER_CONNECTED") %}
             <a href="{{ path('sorties_create') }}" class="btn btn-primary">Créer une sortie</a>
