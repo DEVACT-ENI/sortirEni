@@ -58,82 +58,83 @@ class BouttonPermissionVoter extends Voter
 
     private function permInscription(UserInterface $user, mixed $subject) : bool
     {
-        if ($subject->getListInscrit()->contains($user)) {
-            return false;
-        }
-        if ($subject->getEtat()->getCode() != "OPN") {
-            return false;
-        }
-        if ($subject->getDateLimiteInscription() < new \DateTime()) {
-            return false;
-        }
-        if ($subject->getOrganisateur() == $user) {
-            return false;
-        }
-        if ($subject->getNbInscriptionMax() <= $subject->getListInscrit()->count()) {
-            return false;
-        }
-        return true;
+        $result = true;
+
+        if ($subject->getListInscrit()->contains($user))
+            $result = false;
+        if ($subject->getEtat()->getCode() != "OPN")
+            $result = false;
+        if ($subject->getDateLimiteInscription() < new \DateTime())
+            $result = false;
+        if ($subject->getOrganisateur() == $user)
+            $result = false;
+        if ($subject->getNbInscriptionMax() <= $subject->getListInscrit()->count())
+            $result = false;
+
+        return $result;
     }
 
     private function permDesinscription(UserInterface $user, mixed $subject) : bool
     {
-        if (!$subject->getListInscrit()->contains($user)) {
-            return false;
-        }
-        if ($subject->getEtat()->getCode() != "OPN") {
-            return false;
-        }
-        if ($subject->getDateLimiteInscription() < new \DateTime()) {
-            return false;
-        }
-        if ($subject->getOrganisateur() == $user) {
-            return false;
-        }
-        return true;
+        $result = true;
+
+        if (!$subject->getListInscrit()->contains($user))
+            $result = false;
+        if ($subject->getEtat()->getCode() != "OPN")
+            $result = false;
+        if ($subject->getDateLimiteInscription() < new \DateTime())
+            $result = false;
+        if ($subject->getOrganisateur() == $user)
+            $result = false;
+
+        return $result;
     }
 
     private function permPublier(UserInterface $user, mixed $subject) : bool
     {
-        if ($subject->getOrganisateur() != $user) {
-            return false;
-        }
-        if ($subject->getEtat()->getCode() != "CRT") {
-            return false;
-        }
-        return true;
+        $result = true;
+
+        if ($subject->getOrganisateur() != $user)
+            $result = false;
+        if ($subject->getEtat()->getCode() != "CRT")
+            $result = false;
+
+        return $result;
     }
 
     private function permAnnuler(UserInterface $user, mixed $subject) : bool
     {
-        if ($subject->getOrganisateur() != $user) {
-            return false;
-        }
-        if ($subject->getEtat()->getCode() != "OPN") {
-            return false;
-        }
-        return true;
+        $result = true;
+
+        if ($subject->getOrganisateur() != $user)
+            $result = false;
+        if ($subject->getEtat()->getCode() != "OPN")
+            $result = false;
+
+        return $result;
     }
 
     private function permModifier(UserInterface $user, mixed $subject) : bool
     {
-        if ($subject->getOrganisateur() != $user) {
-            return false;
-        }
-        if ($subject->getEtat()->getCode() != "CRT"){
-            return false;
-        }
-        return true;
+        $result = true;
+
+        if ($subject->getOrganisateur() != $user)
+            $result = false;
+        if ($subject->getEtat()->getCode() != "CRT")
+            $result = false;
+
+        return $result;
     }
 
     private function permSupprimer(UserInterface $user, mixed $subject) : bool
     {
-        if ($subject->getOrganisateur() != $user) {
-            return false;
-        }
-        if ($subject->getEtat()->getCode() != "CRT") {
-            return false;
-        }
-        return true;
+        $result = true;
+
+        if ($subject->getOrganisateur() != $user)
+            $result = false;
+        if ($subject->getEtat()->getCode() != "CRT")
+            $result = false;
+
+        return $result;
     }
 }
