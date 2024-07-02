@@ -12,33 +12,41 @@
 
 <body class="d-flex flex-column">
 
-<header class="align-items-center">
-    {% include 'components/barNav.html.twig' %}
-</header>
+<a href="#" class="floating-btn">
+    <img src="{{ asset('images/arrow-up.svg') }}" alt="Retour en haut de page">
+</a>
 
-<main class="flex-grow-1 text-center">
+    <header class="align-items-center">
+        {% include 'components/barNav.html.twig' %}
+    </header>
 
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
-    {% endfor %}
+    <main class="flex-grow-1 text-center">
 
-    {% for message in app.flashes('error') %}
-        <div class="alert alert-danger">
-            {{ message }}
-        </div>
-    {% endfor %}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
 
-    {% block body %}{% endblock %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
 
-</main>
+        {% block body %}{% endblock %}
+    </main>
 
-<div class="flex-grow-1"></div>
+    <div class="flex-grow-1"></div>
 
-{% include "components/footer.html.twig" %}
+    {% include "components/footer.html.twig" %}
+
 
 
 </body>
-{% block javascripts %}{% endblock %}
+{% block javascripts %}
+
+{% endblock %}
+
+
 </html>

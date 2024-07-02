@@ -12,10 +12,9 @@ class FormFilterMainModele
     private ?\DateTime $dateDebut = null;
     #[Assert\GreaterThan(propertyPath: 'dateDebut', message: 'La date de fin doit être supérieure à la date de début')]
     private ?\DateTime $dateFin = null;
-    private ?bool $organisateur = null;
-    private ?bool $inscrit = null;
-    private ?bool $nonInscrit = null;
+    private ?string $choiceValue = null;
     private ?bool $sortiesPassees = null;
+
 
     public function getCampus(): ?Campus
     {
@@ -57,35 +56,17 @@ class FormFilterMainModele
         $this->dateFin = $dateFin;
     }
 
-    public function getOrganisateur(): ?bool
+    public function getChoiceValue(): ?string
     {
-        return $this->organisateur;
+        return $this->choiceValue;
     }
 
-    public function setOrganisateur(?bool $organisateur): void
+    public function setChoiceValue(?string $choiceValue): void
     {
-        $this->organisateur = $organisateur;
+        $this->choiceValue = $choiceValue;
     }
 
-    public function getInscrit(): ?bool
-    {
-        return $this->inscrit;
-    }
 
-    public function setInscrit(?bool $inscrit): void
-    {
-        $this->inscrit = $inscrit;
-    }
-
-    public function getNonInscrit(): ?bool
-    {
-        return $this->nonInscrit;
-    }
-
-    public function setNonInscrit(?bool $nonInscrit): void
-    {
-        $this->nonInscrit = $nonInscrit;
-    }
 
     public function getSortiesPassees(): ?bool
     {
