@@ -77,7 +77,7 @@
                                 </a>
                             {% endif %}
                             {% if is_granted("PERM_BOUTTON_PUBLIER", sortie) %}
-                                <a href="{{ path('main_home', {'id': sortie.id}) }}"
+                                <a href="{{ path('sorties_publier', {'id': sortie.id}) }}"
                                    onclick="return confirm('Êtes-vous sur de vouloir publier cette sortie ?')"
                                    class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
                                     <img src="{{ asset('images/logoPublier.svg') }}" width="19" height="19"

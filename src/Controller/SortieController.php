@@ -92,7 +92,10 @@ class SortieController extends AbstractController
 
         if (!$motif) {
             $this->addFlash('error', 'Motif est requis');
-            return $this->redirectToRoute('main_home');
+            return $this->render('main/annulersortie.html.twig', [
+                'sortie' => $sortie,
+                'error' => 'Motif est requis'
+            ]);
         }
 
         $sortie->setInfoSortie($motif);
