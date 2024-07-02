@@ -7,3 +7,27 @@ body {
 footer {
     margin-top: auto;
 }
+
+.floating-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    margin-bottom: 25px;
+    z-index: 100;
+    border: none;
+    outline: none;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 50%;
+    background-color: #555;
+}
+
+.floating-btn:hover {
+    background-color: #777;
+}
+
+.floating-btn img {
+    width: 30px; /* Ajustez la taille comme vous le souhaitez */
+    height: 30px; /* Ajustez la taille comme vous le souhaitez */
+}
