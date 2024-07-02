@@ -112,4 +112,34 @@ class SortieController extends AbstractController
         return $this->redirectToRoute('main_home');
     }
 
+    #[Route('/publier/{id}', name: 'publier')]
+    public function publierSortie(int $id, SortieRepository $sortieRepository, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
+    {
+        // Fetch the sortie from the database
+        $sortie = $sortieRepository->find($id);
+
+        // Check if the sortie exists and its state is 'Créée'
+        if (!$sortie || $sortie->getEtat()->getCode() !== 'CRT') {
+            throw $this->createNotFoundException('La sortie n\'existe pas ou n\'est pas dans l\'état "Créée"');
+        }
+
+        // Fetch the 'Ouverte' state from the database
+        $etatOuverte = $etatRepository->findOneBy(['code' => 'OPN']);
+
+        // Check if the 'Ouverte' state exists
+        if (!$etatOuverte) {
+            throw $this->createNotFoundException('L\'état "Ouverte" n\'existe pas');
+        }
+
+        // Set the state of the sortie to 'Ouverte'
+        $sortie->setEtat($etatOuverte);
+
+        // Save the changes
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        // Redirect the user to the home page
+        return $this->redirectToRoute('main_home');
+    }
+
 }

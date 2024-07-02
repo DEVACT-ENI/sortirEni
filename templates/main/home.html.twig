@@ -56,7 +56,7 @@
                             - <a href="{{ path('sorties_update', {'id': sortie.id}) }}">Modifier</a>
                         {% endif %}
                         {% if is_granted("PERM_BOUTTON_PUBLIER", sortie) %}
-                            - <a href="{{ path('main_home', {'id': sortie.id}) }}" onclick="return confirm('Êtes-vous sur de vouloir publier cette sortie ?')">Publier</a>
+                            <a href="{{ path('sorties_publier', {'id': sortie.id}) }}" onclick="return confirm('Êtes-vous sur de vouloir publier cette sortie ?')">Publier</a>
                         {% endif %}
                         {% if is_granted("PERM_BOUTTON_ANNULER", sortie) %}
                             - <a href="{{ path('sorties_annuler_form', {'id': sortie.id}) }}" onclick="return confirm('Êtes-vous sur de vouloir annuler cette sortie ?')">Annuler</a>
