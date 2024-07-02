@@ -100,3 +100,12 @@ button.btn{
     min-height: 45px;
     max-height: 45px;
 }
+
+#map {
+    height: 600px;
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 0 30px 8px #FFFFFF;
+}
+
