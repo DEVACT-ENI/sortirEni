@@ -92,7 +92,10 @@ class SortieController extends AbstractController
 
         if (!$motif) {
             $this->addFlash('error', 'Motif est requis');
-            return $this->redirectToRoute('main_home');
+            return $this->render('main/annulersortie.html.twig', [
+                'sortie' => $sortie,
+                'error' => 'Motif est requis'
+            ]);
         }
 
         $sortie->setInfoSortie($motif);
@@ -109,6 +112,43 @@ class SortieController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Sortie annulée !');
+        return $this->redirectToRoute('main_home');
+    }
+
+    #[Route('/publier/{id}', name: 'publier')]
+    public function publierSortie(int $id, SortieRepository $sortieRepository, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
+    {
+        // Fetch the sortie from the database
+        $sortie = $sortieRepository->find($id);
+
+        // Check if the sortie exists and its state is 'Créée'
+        if (!$sortie || $sortie->getEtat()->getCode() !== 'CRT') {
+            throw $this->createNotFoundException('La sortie n\'existe pas ou n\'est pas dans l\'état "Créée"');
+        }
+
+        // Check if the dateLimiteInscription is less than tomorrow's date
+        $tomorrow = new \DateTime();
+        $tomorrow->modify('+1 day');
+        if ($sortie->getDateLimiteInscription() < $tomorrow) {
+            throw new \Exception('La date de clôture doit être supérieure à la date du jour plus un jour');
+        }
+
+        // Fetch the 'Ouverte' state from the database
+        $etatOuverte = $etatRepository->findOneBy(['code' => 'OPN']);
+
+        // Check if the 'Ouverte' state exists
+        if (!$etatOuverte) {
+            throw $this->createNotFoundException('L\'état "Ouverte" n\'existe pas');
+        }
+
+        // Set the state of the sortie to 'Ouverte'
+        $sortie->setEtat($etatOuverte);
+
+        // Save the changes
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        // Redirect the user to the home page
         return $this->redirectToRoute('main_home');
     }
 
