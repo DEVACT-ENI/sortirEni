@@ -3,13 +3,13 @@
 {% block title %}Liste des sorties{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+{#    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">#}
     <link rel="stylesheet" href="{{ asset('styles/test.css') }}">
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{#    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>#}
+{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>#}
 {% endblock %}
 
 {% block body %}
@@ -28,7 +28,7 @@
         {{ form_end(form) }}
 
         {% for sortie in sorties %}
-            <div class="card mt-5 border-5 pt-2 active pb-0 px-3">
+            <div class="card mt-5 pt-2 active pb-0 px-3 shadow-sm p-3 mb-5 bg-white rounded">
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-12 ">
@@ -44,7 +44,7 @@
                                     <span class="vl ml-1 mr-2 "></span>
                                     <span>Organisé par</span>
                                     <span class="font-weight-bold">
-                                        <a href="{{ path('participants_detail', {'id': sortie.organisateur.id }) }}">{{ sortie.organisateur.username }}</a>
+                                        <a href="{{ path('participants_detail', {'id': sortie.organisateur.id }) }}"><strong>{{ sortie.organisateur.username }}</strong></a>
                                     </span>
                                     <span>, la sortie se déroulera le <strong>{{ sortie.dateHeureDebut|format_datetime('full', 'short', locale='fr') }}</strong></span>
                                     <span class="vl ml-1 mr-2 "></span>
@@ -111,11 +111,11 @@
                                         <a href="{{ path('participants_detail', {'id': participant.id }) }}">
                                             {% if file_exists(realpath('uploads/photos/photos/' ~ participant.id ~ '.webp')) %}
                                                 <img src="{{ asset('uploads/photos/photos/' ~ participant.id ~ '.webp') }}"
-                                                     class="rounded-circle img-fluid " width="35" height="35"
-                                                     alt="User photo">
+                                                     class="rounded-circle img-fluid test shadow  " width="35" height="35"
+                                                     alt="User photo" title="{{ participant.username }}" >
                                             {% else %}
                                                 <img src="{{ asset('default.webp') }}" class="rounded-circle img-fluid "
-                                                     width="35" height="35" alt="Default User photo">
+                                                     width="35" height="35" alt="Default User photo" title="{{ participant.username }}">
                                             {% endif %}
                                         </a>
                                     </li>
@@ -135,10 +135,8 @@
                                         <a href="{{ path('participants_inscription_sortie', {'id': sortie.id}) }}"
                                            class="btn btn-outlined btn-black text-muted bg-transparent"
                                            data-wow-delay="0.7s">
-                                            <button>
                                                 <img src="https://img.icons8.com/ios/50/000000/plus.png" width="30"
                                                      height="30 " class="more" alt="Inscription">
-                                            </button>
                                         </a>
                                     </li>
                                 {% endif %}
