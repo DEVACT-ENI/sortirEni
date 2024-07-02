@@ -123,6 +123,13 @@ class SortieController extends AbstractController
             throw $this->createNotFoundException('La sortie n\'existe pas ou n\'est pas dans l\'état "Créée"');
         }
 
+        // Check if the dateLimiteInscription is less than tomorrow's date
+        $tomorrow = new \DateTime();
+        $tomorrow->modify('+1 day');
+        if ($sortie->getDateLimiteInscription() < $tomorrow) {
+            throw new \Exception('La date de clôture doit être supérieure à la date du jour plus un jour');
+        }
+
         // Fetch the 'Ouverte' state from the database
         $etatOuverte = $etatRepository->findOneBy(['code' => 'OPN']);
 
