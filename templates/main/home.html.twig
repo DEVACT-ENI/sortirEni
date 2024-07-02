@@ -111,10 +111,10 @@
                                         <a href="{{ path('participants_detail', {'id': participant.id }) }}">
                                             {% if file_exists(realpath('uploads/photos/photos/' ~ participant.id ~ '.webp')) %}
                                                 <img src="{{ asset('uploads/photos/photos/' ~ participant.id ~ '.webp') }}"
-                                                     class="rounded-circle img-fluid test shadow  " width="35" height="35"
+                                                     class="rounded-circle img-fluid test" width="35" height="35"
                                                      alt="User photo" title="{{ participant.username }}" >
                                             {% else %}
-                                                <img src="{{ asset('default.webp') }}" class="rounded-circle img-fluid "
+                                                <img src="{{ asset('default.webp') }}" class="rounded-circle img-fluid test"
                                                      width="35" height="35" alt="Default User photo" title="{{ participant.username }}">
                                             {% endif %}
                                         </a>
