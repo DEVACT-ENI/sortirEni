@@ -61,7 +61,7 @@ class BouttonPermissionVoter extends Voter
         if ($subject->getListInscrit()->contains($user)) {
             return false;
         }
-        if ($subject->getEtat()->getLibelle() != "Ouverte") {
+        if ($subject->getEtat()->getCode() != "OPN") {
             return false;
         }
         if ($subject->getDateLimiteInscription() < new \DateTime()) {
@@ -81,7 +81,7 @@ class BouttonPermissionVoter extends Voter
         if (!$subject->getListInscrit()->contains($user)) {
             return false;
         }
-        if ($subject->getEtat()->getLibelle() != "Ouverte") {
+        if ($subject->getEtat()->getCode() != "OPN") {
             return false;
         }
         if ($subject->getDateLimiteInscription() < new \DateTime()) {
@@ -98,7 +98,7 @@ class BouttonPermissionVoter extends Voter
         if ($subject->getOrganisateur() != $user) {
             return false;
         }
-        if ($subject->getEtat()->getLibelle() != "Créée") {
+        if ($subject->getEtat()->getCode() != "CRT") {
             return false;
         }
         return true;
@@ -109,7 +109,7 @@ class BouttonPermissionVoter extends Voter
         if ($subject->getOrganisateur() != $user) {
             return false;
         }
-        if ($subject->getEtat()->getLibelle() != "Ouverte") {
+        if ($subject->getEtat()->getCode() != "OPN") {
             return false;
         }
         return true;
@@ -120,7 +120,7 @@ class BouttonPermissionVoter extends Voter
         if ($subject->getOrganisateur() != $user) {
             return false;
         }
-        if ($subject->getEtat()->getLibelle() != "Créée") {
+        if ($subject->getEtat()->getCode() != "CRT"){
             return false;
         }
         return true;
@@ -131,7 +131,7 @@ class BouttonPermissionVoter extends Voter
         if ($subject->getOrganisateur() != $user) {
             return false;
         }
-        if ($subject->getEtat()->getLibelle() != "Créée") {
+        if ($subject->getEtat()->getCode() != "CRT") {
             return false;
         }
         return true;

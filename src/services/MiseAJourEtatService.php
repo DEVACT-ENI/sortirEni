@@ -24,21 +24,20 @@ class MiseAJourEtatService
             $nbInscriptions = count($sortie->getListInscrit());
             $maxInscriptions = $sortie->getNbInscriptionMax();
 
-            if ($sortie->getEtat()->getLibelle() != 'Créée') {
+            if ($sortie->getEtat()->getCode() != 'CRT' && $sortie->getEtat()->getCode() != 'ANN') {
                 if ($dateDebut < $dateActuelleLessOneMonth) {
-                    $etat = $this->etatRepository->findOneBy(['libelle' => 'Historisée']);
+                    $etat = $this->etatRepository->findOneBy(['code' => 'HIS']);
                 } else if ($dateDebutDuree < $dateActuelle) {
-                    $etat = $this->etatRepository->findOneBy(['libelle' => 'Passée']);
+                    $etat = $this->etatRepository->findOneBy(['code' => 'PAS']);
                 } else if ($dateDebut < $dateActuelle) {
-                    $etat = $this->etatRepository->findOneBy(['libelle' => 'Activité en cours']);
+                    $etat = $this->etatRepository->findOneBy(['code' => 'ACN']);
                 } else if ($dateLimite < $dateActuelle || $nbInscriptions >= $maxInscriptions) {
-                    $etat = $this->etatRepository->findOneBy(['libelle' => 'Clôturée']);
+                    $etat = $this->etatRepository->findOneBy(['code' => 'CLO']);
                 } else {
-                    $etat = $this->etatRepository->findOneBy(['libelle' => 'Ouverte']);
+                    $etat = $this->etatRepository->findOneBy(['code' => 'OPN']);
                 }
-            } else
-                $etat = $this->etatRepository->findOneBy(['libelle' => 'Créée']);
-            $sortie->setEtat($etat);
+                $sortie->setEtat($etat);
+            }
             $this->sortieRepository->save($sortie);
         }
     }

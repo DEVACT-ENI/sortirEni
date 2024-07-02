@@ -54,4 +54,10 @@ class MainController extends AbstractController
             'sortie' => $sortie,
         ]);
     }
+
+    #[Route('/test', name: 'sortie_test')]
+    public function test(): Response
+    {
+        return $this->render('main/test.html.twig');
+    }
 }
