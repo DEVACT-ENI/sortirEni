@@ -126,7 +126,7 @@
                                            class="btn btn-outlined btn-black text-muted bg-transparent"
                                            data-wow-delay="0.7s">
                                             <img src="https://img.icons8.com/ios/50/000000/minus.png" width="30"
-                                                 height="30 " class="more">
+                                                 height="30 " class="more" alt="Désinscription">
                                         </a>
                                     </li>
                                 {% endif %}
@@ -135,8 +135,10 @@
                                         <a href="{{ path('participants_inscription_sortie', {'id': sortie.id}) }}"
                                            class="btn btn-outlined btn-black text-muted bg-transparent"
                                            data-wow-delay="0.7s">
-                                            <img src="https://img.icons8.com/ios/50/000000/plus.png" width="30"
-                                                 height="30 " class="more">
+                                            <button>
+                                                <img src="https://img.icons8.com/ios/50/000000/plus.png" width="30"
+                                                     height="30 " class="more" alt="Inscription">
+                                            </button>
                                         </a>
                                     </li>
                                 {% endif %}
