@@ -26,7 +26,14 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-12 ">
-                            <h4 class="card-title "><b>{{ sortie.nom }}</b></h4>
+                            {% if is_granted("PERM_BOUTTON_AFFICHER", sortie) %}
+                                <a href="{{ path('sortie_view', {'id': sortie.id}) }}"
+                                   class="btn btn-black" style="text-decoration: none;" data-wow-delay="0.7s">
+                                    <h4 class="card-title "><b>{{ sortie.nom }}</b></h4>
+                                </a>
+                            {% else %}
+                                 <h4 class="card-title "><b>{{ sortie.nom }}</b></h4>
+                            {% endif %}
                         </div>
                         <div class="col">
                             <h6 class="card-subtitle mb-2 text-muted">

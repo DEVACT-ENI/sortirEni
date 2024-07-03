@@ -21,6 +21,8 @@ footer {
     padding: 15px;
     border-radius: 50%;
     background-color: #555;
+    opacity: 0.7;
+
 }
 
 .floating-btn:hover {
@@ -28,6 +30,6 @@ footer {
 }
 
 .floating-btn img {
-    width: 30px; /* Ajustez la taille comme vous le souhaitez */
-    height: 30px; /* Ajustez la taille comme vous le souhaitez */
+    width: 30px;
+    height: 30px;
 }
