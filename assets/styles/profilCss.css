@@ -22,3 +22,8 @@ body{
 .me-2 {
     margin-right: .5rem!important;
 }
+
+.custom-file-label {
+    z-index: -1;
+    opacity: 0;
+}

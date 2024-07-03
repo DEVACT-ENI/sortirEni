@@ -1,5 +1,10 @@
 {% block form_row %}
     <div class="row mb-3">
+        {% if errors|length > 0 %}
+            <div class="alert alert-danger">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
         <div class="col-sm-4 d-flex align-items-center justify-content-end">
             <h6 class="mb-0">{{ label }}</h6>
         </div>
