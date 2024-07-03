@@ -4,27 +4,34 @@
 
 
 {% block body %}
-    <h1>Afficher une sortie</h1>
-
-{#affichage des informations de la sortie#}
     <div class="card">
+        <div class="card-header">
+            <h1>{{ sortie.nom }}</h1>
+        </div>
+
+    {#affichage des informations de la sortie#}
         <div class="card-body">
-            <h5 class="card-title
-            ">Nom de la sortie : {{ sortie.nom }}</h5>
-            <p class="card-text">Date de la sortie : {{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</p>
-            <p class="card-text">Date limite d'inscription : {{ sortie.dateLimiteInscription|date('d/m/Y') }}</p>
-            <p class="card-text">Nombre de places : {{ sortie.nbInscriptionMax }}</p>
-            <p class="card-text">Durée : {{ sortie.duree }} minutes</p>
-            <p class="card-text">Description et infos : {{ sortie.infoSortie }}</p>
-            <p class="card-text">Campus : {{ sortie.campus.nom }}</p>
-            <p class="card-text">Lieu : {{ sortie.lieu.nom }}</p>
-            <p class="card-text">Rue : {{ sortie.lieu.rue }}</p>
-            <p class="card-text">Code postal : {{ sortie.lieu.ville.codePostal }}</p>
-            <p class="card-text">Ville : {{ sortie.lieu.ville.nom }}</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Date de la sortie : {{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</p>
+                    <p>Date limite d'inscription : {{ sortie.dateLimiteInscription|date('d/m/Y') }}</p>
+                    <p>Durée : {{ sortie.duree }} minutes</p>
+                </div>
+
+                <div class="col-md-6">
+                    <p>Description et infos : {{ sortie.infoSortie }}</p>
+                    <p>Places restantes : {{ sortie.nbInscriptionMax - sortie.listInscrit|length }} sur les {{ sortie.nbInscriptionMax }} places prévues</p>
+                    <p>Campus : {{ sortie.campus.nom }}</p>
+                    <p>Lieu : {{ sortie.lieu.nom }}</p>
+                    <p>Rue : {{ sortie.lieu.rue }}</p>
+                    <p>Code postal : {{ sortie.lieu.ville.codePostal }}</p>
+                    <p>Ville : {{ sortie.lieu.ville.nom }}</p>
 
 
-{#            <p class="card-text">Latitude : {{ sortie.lieu.latitude }}</p>#}
-{#            <p class="card-text">Longitude : {{ sortie.lieu.longitude }}</p>#}
+    {#              <p>Latitude : {{ sortie.lieu.latitude }}</p>#}
+    {#              <p>Longitude : {{ sortie.lieu.longitude }}</p>#}
+                </div>
+            </div>
         </div>
     </div>
 
@@ -71,7 +78,7 @@
     {% block styles %}
         <style>
             .card {
-                max-width: 600px;
+                max-width: 800px;
                 margin: 0 auto;
                 padding: 20px;
             }

@@ -13,6 +13,10 @@
 
 <body class="d-flex flex-column">
 
+<a class="floating-btn">
+    <img src="{{ asset('images/arrow-up.svg') }}" alt="Retour en haut de page">
+</a>
+
 <header class="align-items-center">
     {% include 'components/barNav.html.twig' %}
 </header>
@@ -32,7 +36,6 @@
     {% endfor %}
 
     {% block body %}{% endblock %}
-
 </main>
 
 <div class="flex-grow-1"></div>
@@ -41,5 +44,47 @@
 
 
 </body>
-{% block javascripts %}{% endblock %}
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const scrollButton = document.querySelector('.floating-btn');
+            const img = scrollButton.querySelector('img');
+
+            const smoothScrollTo = (endY) => {
+                const startY = window.scrollY;
+                const distanceY = endY - startY;
+                let startTime = null;
+
+                const easeInOutQuad = (time, start, distance) => {
+                    time /= 250; // Half of 500ms duration
+                    if (time < 1) return distance / 2 * time * time + start;
+                    time--;
+                    return -distance / 2 * (time * (time - 2) - 1) + start;
+                };
+
+                const animation = (currentTime) => {
+                    if (startTime === null) startTime = currentTime;
+                    const timeElapsed = currentTime - startTime;
+                    const nextY = easeInOutQuad(timeElapsed, startY, distanceY);
+
+                    window.scrollTo(0, nextY);
+                    if (timeElapsed < 500) requestAnimationFrame(animation); // 500ms duration
+                };
+
+                requestAnimationFrame(animation);
+            };
+
+            const updateButton = () => {
+                const isTop = window.scrollY === 0;
+                img.style.transform = `rotate(${isTop ? '180deg' : '0deg'})`;
+                scrollButton.onclick = () => smoothScrollTo(isTop ? document.body.scrollHeight : 0);
+            };
+
+            updateButton();
+            window.addEventListener('scroll', updateButton);
+        });
+    </script>
+{% endblock %}
+
+
 </html>
