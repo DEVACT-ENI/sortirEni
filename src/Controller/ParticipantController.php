@@ -34,11 +34,8 @@ class ParticipantController extends AbstractController
             /** @var UploadedFile $file */
             $file = $form['photo']->getData();
 
-            if ($file) {
+            if ($file)
                 $fileName = $fileUploader->upload($file, (string)$participant->getId());
-
-                $request->getSession()->set('user_photo', $fileName);
-            }
 
             $participantRepository->save($participant);
             return $this->redirectToRoute('main_home');
