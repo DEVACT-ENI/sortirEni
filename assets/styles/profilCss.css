@@ -1,6 +1,3 @@
-body{
-    margin-top:20px;
-}
 .card {
     position: relative;
     display: flex;
@@ -26,4 +23,14 @@ body{
 .custom-file-label {
     z-index: -1;
     opacity: 0;
+}
+
+.progress-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.margin-bottom {
+    margin-bottom: 20px;
 }
