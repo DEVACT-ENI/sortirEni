@@ -45,12 +45,6 @@ class ModifProfilType extends AbstractType
                 'class' => Campus::class,
                 'choice_label' => 'nom',
                 'label' => 'Campus',
-            ])
-            ->add('photo', FileType::class, [
-                'label' => 'Photo',
-                'mapped' => false,
-                'required' => false,
-                'attr' => ['accept' => 'image/jpeg, image/png'],
             ]);
     }
 
