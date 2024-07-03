@@ -20,8 +20,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class ParticipantController extends AbstractController
 {
     #[Route('/modif-profil', name: 'modif_profil', methods: ['GET', 'POST'])]
-    public function modifProfil(ParticipantRepository $participantRepository, Request $request, UserPasswordHasherInterface $hasher, FileUploader $fileUploader): Response
+    public function modifProfil(ParticipantRepository $participantRepository, Request $request, UserPasswordHasherInterface $hasher, FileUploader $fileUploader, SortieRepository $sortieRepository): Response
     {
+        $countSortiesCreees = $sortieRepository->countSortiesCreeByOrganisateur($this->getUser());
+        $countSortiesInscrit = $sortieRepository->countSortiesInscritByParticipant($this->getUser());
+        $countSortiesAnnulees = $sortieRepository->countSortiesAnnuleesByParticipant($this->getUser());
         $participant =  $participantRepository->find($this->getUser()->getId());
         $participant2 = clone $participant;
         $form = $this->createForm(ModifProfilType::class, $participant2);
@@ -55,6 +58,9 @@ class ParticipantController extends AbstractController
             'form' => $form->createView(),
             'formPhoto' => $formPhoto->createView(),
             'participant' => $participant,
+            'countSortiesCreees' => $countSortiesCreees,
+            'countSortiesInscrit' => $countSortiesInscrit,
+            'countSortiesAnnulees' => $countSortiesAnnulees,
         ]);
     }
 
