@@ -29,10 +29,10 @@ class FileUploader
 
         // Check if the uploads and photos directories exist, if not, create them
         if (!file_exists($this->targetDirectory)) {
-            mkdir($this->targetDirectory, 0777, true);
+            mkdir($this->targetDirectory, 0644, true);
         }
         if (!file_exists($this->targetDirectory . '/photos')) {
-            mkdir($this->targetDirectory . '/photos', 0777, true);
+            mkdir($this->targetDirectory . '/photos', 0644, true);
         }
 
         // Save the converted image to the photos directory
