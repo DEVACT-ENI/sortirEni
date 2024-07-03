@@ -3,8 +3,7 @@
 {% block title %}Liste des sorties{% endblock %}
 
 {% block stylesheets %}
-{#    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">#}
-    <link rel="stylesheet" href="{{ asset('styles/test.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/homeCss.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -23,7 +22,7 @@
         {{ form_end(form) }}
 
         {% for sortie in sorties %}
-            <div class="card mt-5 pt-2 active pb-0 px-3 shadow-sm p-3 mb-5 bg-white rounded">
+            <div class="card pt-2 active pb-0 px-3 shadow-sm p-3 mb-3 bg-white rounded">
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-12 ">
@@ -64,7 +63,7 @@
                             <span class="vl ml-3"></span>
                             {% if is_granted("PERM_BOUTTON_AFFICHER", sortie) %}
                                 <a href="{{ path('sortie_view', {'id': sortie.id}) }}"
-                                   class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                   class="btn btn-outlined btn-black text-muted bg-transparent link" data-wow-delay="0.7s">
                                     <img src="{{ asset('images/logoOeil.svg') }}" width="19" height="19"
                                          alt="Logo afficher">
                                     <small>Afficher</small>
@@ -72,7 +71,7 @@
                             {% endif %}
                             {% if is_granted("PERM_BOUTTON_MODIFIER", sortie) %}
                                 <a href="{{ path('sorties_update', {'id': sortie.id}) }}"
-                                   class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                   class="btn btn-outlined btn-black text-muted bg-transparent link" data-wow-delay="0.7s">
                                     <img src="{{ asset('images/logoModifier.svg') }}" width="19" height="19"
                                          alt="Logo modifier">
                                     <small>Modifier</small>
@@ -81,7 +80,7 @@
                             {% if is_granted("PERM_BOUTTON_PUBLIER", sortie) %}
                                 <a href="{{ path('sorties_publier', {'id': sortie.id}) }}"
                                    onclick="return confirm('Êtes-vous sur de vouloir publier cette sortie ?')"
-                                   class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                   class="btn btn-outlined btn-black text-muted bg-transparent link" data-wow-delay="0.7s">
                                     <img src="{{ asset('images/logoPublier.svg') }}" width="19" height="19"
                                          alt="Logo publier">
                                     <small>Publier</small>
@@ -90,7 +89,7 @@
                             {% if is_granted("PERM_BOUTTON_ANNULER", sortie) %}
                                 <a href="{{ path('sorties_annuler_form', {'id': sortie.id}) }}"
                                    onclick="return confirm('Êtes-vous sur de vouloir annuler cette sortie ?')"
-                                   class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                   class="btn btn-outlined btn-black text-muted bg-transparent link" data-wow-delay="0.7s">
                                     <img src="{{ asset('images/logoAnnuler.svg') }}" width="19" height="19"
                                          alt="Logo annuler">
                                     <small>Annuler</small>
@@ -98,7 +97,7 @@
                             {% endif %}
                             {% if is_granted("PERM_BOUTTON_AFFICHER", sortie) == false %}
                                 <a href="{{ path('app_login') }}"
-                                   class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                   class="btn btn-outlined btn-black text-muted bg-transparent link" data-wow-delay="0.7s">
                                     <small>Connexion nécessaire</small>
                                 </a>
                             {% endif %}
@@ -125,7 +124,7 @@
                                 {% if is_granted("PERM_BOUTTON_DESINSCRIPTION", sortie) %}
                                     <li class="list-inline-item">
                                         <a href="{{ path('participants_desinscription_sortie', {'id': sortie.id}) }}"
-                                           class="btn btn-outlined btn-black text-muted bg-transparent"
+                                           class="btn btn-outlined btn-black text-muted bg-transparent link"
                                            data-wow-delay="0.7s">
                                             <img src="https://img.icons8.com/ios/50/000000/minus.png" width="30"
                                                  height="30 " class="more" alt="Désinscription">
@@ -135,7 +134,7 @@
                                 {% if is_granted("PERM_BOUTTON_INSCRIPTION", sortie) %}
                                     <li class="list-inline-item">
                                         <a href="{{ path('participants_inscription_sortie', {'id': sortie.id}) }}"
-                                           class="btn btn-outlined btn-black text-muted bg-transparent"
+                                           class="btn btn-outlined btn-black text-muted bg-transparent link"
                                            data-wow-delay="0.7s">
                                                 <img src="https://img.icons8.com/ios/50/000000/plus.png" width="30"
                                                      height="30 " class="more" alt="Inscription">

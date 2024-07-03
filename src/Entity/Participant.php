@@ -231,4 +231,18 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    public function copyFrom(Participant $participant): static
+    {
+        $this->setNom($participant->getNom());
+        $this->setPrenom($participant->getPrenom());
+        $this->setTelephone($participant->getTelephone());
+        $this->setMail($participant->getMail());
+        $this->setCampus($participant->getCampus());
+        $this->setPassword($participant->getPassword());
+        $this->setUsername($participant->getUsername());
+
+        return $this;
+    }
+
 }

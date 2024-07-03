@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\PhotoProfilType;
 use App\Form\ModifProfilType;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
@@ -21,31 +22,38 @@ class ParticipantController extends AbstractController
     #[Route('/modif-profil', name: 'modif_profil', methods: ['GET', 'POST'])]
     public function modifProfil(ParticipantRepository $participantRepository, Request $request, UserPasswordHasherInterface $hasher, FileUploader $fileUploader): Response
     {
-        $participant = $this->getUser();
-        $form = $this->createForm(ModifProfilType::class, $participant);
+        $participant =  $participantRepository->find($this->getUser()->getId());
+        $participant2 = clone $participant;
+        $form = $this->createForm(ModifProfilType::class, $participant2);
+        $formPhoto = $this->createForm(PhotoProfilType::class);
+        $formPhoto->handleRequest($request);
         $form->handleRequest($request);
 
+        if ($formPhoto->isSubmitted() && $formPhoto->isValid()) {
+            /** @var UploadedFile $file */
+            $file = $formPhoto['photo']->getData();
+
+            if ($file)
+                $fileName = $fileUploader->upload($file, (string)$participant->getId());
+            return $this->redirectToRoute('participants_modif_profil');
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
+            dump("j'ai passe la validation");
             if ($form->get('password')->getData() != null)
-                $participant->setPassword($hasher->hashPassword(
+                $participant2->setPassword($hasher->hashPassword(
                     $participant,
                     $form->get('password')->getData()));
 
-            /** @var UploadedFile $file */
-            $file = $form['photo']->getData();
-
-            if ($file) {
-                $fileName = $fileUploader->upload($file, (string)$participant->getId());
-
-                $request->getSession()->set('user_photo', $fileName);
-            }
-
+            $participant->copyFrom($participant2);
             $participantRepository->save($participant);
-            return $this->redirectToRoute('main_home');
+            $this->addFlash('success', 'Profil modifié avec succès');
+            return $this->redirectToRoute('participants_modif_profil');
         }
 
         return $this->render('participant/modif-profil.html.twig', [
             'form' => $form->createView(),
+            'formPhoto' => $formPhoto->createView(),
             'participant' => $participant,
         ]);
     }
