@@ -12,40 +12,74 @@
 
 <body class="d-flex flex-column">
 
-<a href="#" class="floating-btn">
+<a class="floating-btn">
     <img src="{{ asset('images/arrow-up.svg') }}" alt="Retour en haut de page">
 </a>
 
-    <header class="align-items-center">
-        {% include 'components/barNav.html.twig' %}
-    </header>
+<header class="align-items-center">
+    {% include 'components/barNav.html.twig' %}
+</header>
 
-    <main class="flex-grow-1 text-center">
+<main class="flex-grow-1 text-center">
 
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
-        {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
 
-        {% for message in app.flashes('error') %}
-            <div class="alert alert-danger">
-                {{ message }}
-            </div>
-        {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
 
-        {% block body %}{% endblock %}
-    </main>
+    {% block body %}{% endblock %}
+</main>
 
-    <div class="flex-grow-1"></div>
+<div class="flex-grow-1"></div>
 
-    {% include "components/footer.html.twig" %}
-
+{% include "components/footer.html.twig" %}
 
 
 </body>
 {% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollButton = document.querySelector('.floating-btn');
+            const img = scrollButton.querySelector('img');
 
+            function updateButtonForScrollPosition() {
+                if (window.scrollY === 0) {
+                    // At the top of the page, so set button to "Go Down"
+                    img.style.transform = 'rotate(180deg)'; // Rotate the arrow to point down
+                    scrollButton.onclick = function() {
+                        // Scroll to the bottom of the page
+                        window.scrollTo({
+                            top: document.body.scrollHeight,
+                            behavior: 'smooth'
+                        });
+                    };
+                } else {
+                    // Not at the top, so set button to "Go Up"
+                    img.style.transform = 'rotate(0deg)'; // Reset rotation to point up
+                    scrollButton.onclick = function() {
+                        // Scroll back to the top of the page
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    };
+                }
+            }
+
+            // Initial update based on the current scroll position
+            updateButtonForScrollPosition();
+
+            // Update button on scroll
+            window.addEventListener('scroll', updateButtonForScrollPosition);
+        });
+    </script>
 {% endblock %}
 
 
