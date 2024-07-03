@@ -35,6 +35,12 @@ class FileUploader
             mkdir($this->targetDirectory . '/photos', 0644, true);
         }
 
+        $fullPath = $this->targetDirectory . '/photos/' . $fileName . '.webp';
+
+        if (file_exists($fullPath)) {
+            unlink($fullPath);
+        }
+
         // Save the converted image to the photos directory
         $fileName = $fileName . '.webp';
         file_put_contents($this->targetDirectory . '/photos/' . $fileName, $webpData);
