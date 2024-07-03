@@ -24,9 +24,12 @@
     <h2>Créer un nouveau lieu</h2>
     <br>
 
-    {{ form_start(lieuForm) }}
+    <div class="form-container-wrapper">
+    <div class="form-container-global">
 
     <div class="form-container">
+
+        {{ form_start(lieuForm) }}
 
         {{ form_row(lieuForm.nom) }}
         {{ form_row(lieuForm.rue) }}
@@ -34,14 +37,26 @@
         {{ form_row(lieuForm.latitude) }}
         {{ form_row(lieuForm.longitude) }}
 
+
+        {{ form_end(lieuForm) }}
+
+        <br>
+        <button class="btn btn-primary">Validate !</button>
+
     </div>
 
-    <br>
-    <button class="btn btn-primary">Validate !</button>
+    <div class="form-container">
+       <br>
+       <div id="map"></div>
+       <div id="click-coordinates"></div>
+        <br>
+       <input type="button" value="Rafraichir" id="refresh">
+    </div>
 
-    <div id="map"></div>
-    <div id="click-coordinates"></div>
 
-    {{ form_end(lieuForm) }}
+
+    </div>
+    </div>
+
 
 {% endblock %}

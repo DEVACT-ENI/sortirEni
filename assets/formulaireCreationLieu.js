@@ -22,7 +22,9 @@ function init(){
     //on écoute les événements sur l'input Ville
     //le champ "blur" est utilisé pour quand on a quitté le champ et on a sélectionné la ville
     //getCity sera la fonction qui permettra de détecter la ville et d'aller chercher les infos de positionnement
+    document.querySelector("#lieu_rue").addEventListener("change", getCity);
     document.querySelector("#lieu_ville").addEventListener("change", getCity);
+    document.getElementById("refresh").addEventListener("click", getCity);
 
 
     function mapClickListen(e){
@@ -65,6 +67,7 @@ function init(){
 
 
 }
+
 
 function addMarker(pos){
     //On vérifie si un marqueur  (pour éviter dans rajouter plusieurs qui persistent)
@@ -125,7 +128,6 @@ xmlhttp.onreadystatechange = () => {
             //permet de se déplacer sur la carte
             map.flyTo(pos, 13);
 
-
         }
     }
 }
@@ -138,3 +140,4 @@ xmlhttp.onreadystatechange = () => {
 }
 
 window.onload = init
+

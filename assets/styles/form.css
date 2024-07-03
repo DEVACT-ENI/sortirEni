@@ -13,11 +13,28 @@ h2{
     text-align:center;
 }
 
-.form-container {
+.form-container-create
+{
+    width: 100%;
+    padding : 10px;
+}
+
+.form-container-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
+}
+
+.form-container-global {
+    display: flex;
+    justify-content: center;
     width: 100%;
+}
+
+.form-container {
+    width: 50%;
+    padding : 10px;
 }
 
 .form-row {
@@ -26,7 +43,6 @@ h2{
     align-items: flex-start;
     margin-bottom: 15px;
     width: 100%;
-    max-width: 600px;
 }
 
 .form-row label {
@@ -47,7 +63,7 @@ h2{
 }
 
 .form-container-creerLieu {
-    width: 600px;
+    width: 100%;
 }
 
 .form-creerLieu {
@@ -76,11 +92,26 @@ h2{
 }
 
 .btn-creer {
+    text-decoration: none;
+    outline-width: medium;
+    color: black;
+    border: 1px solid #ccc;
+    background-color: lightgrey;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 11px;
+    padding-left: 13px;
+    padding-right: 13px;
+    margin-top: 30px;
+    width: 10%;
+}
+
+#btn-refresh {
     text-decoration : none;
     outline-width: medium;
     color:black;
     border: 1px solid #ccc;
-    background-color: lightgrey;
+    background-color: white;
     box-sizing: border-box;
     border-radius: 5px;
     padding: 11px;
@@ -88,7 +119,6 @@ h2{
     padding-right:13px;
     margin-top: 30px;
     width:10%;
-
 }
 
 button.btn{
@@ -102,8 +132,8 @@ button.btn{
 }
 
 #map {
-    height: 600px;
-    width: 900px;
+    height: 400px;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     box-shadow: 0 0 30px 8px #FFFFFF;
