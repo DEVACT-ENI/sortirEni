@@ -49,11 +49,34 @@
             const scrollButton = document.querySelector('.floating-btn');
             const img = scrollButton.querySelector('img');
 
-            const scrollToPosition = (top) => window.scrollTo({ top, behavior: 'smooth' });
+            const smoothScrollTo = (endY) => {
+                const startY = window.scrollY;
+                const distanceY = endY - startY;
+                let startTime = null;
+
+                const easeInOutQuad = (time, start, distance) => {
+                    time /= 250; // Half of 500ms duration
+                    if (time < 1) return distance / 2 * time * time + start;
+                    time--;
+                    return -distance / 2 * (time * (time - 2) - 1) + start;
+                };
+
+                const animation = (currentTime) => {
+                    if (startTime === null) startTime = currentTime;
+                    const timeElapsed = currentTime - startTime;
+                    const nextY = easeInOutQuad(timeElapsed, startY, distanceY);
+
+                    window.scrollTo(0, nextY);
+                    if (timeElapsed < 500) requestAnimationFrame(animation); // 500ms duration
+                };
+
+                requestAnimationFrame(animation);
+            };
+
             const updateButton = () => {
                 const isTop = window.scrollY === 0;
                 img.style.transform = `rotate(${isTop ? '180deg' : '0deg'})`;
-                scrollButton.onclick = () => scrollToPosition(isTop ? document.body.scrollHeight : 0);
+                scrollButton.onclick = () => smoothScrollTo(isTop ? document.body.scrollHeight : 0);
             };
 
             updateButton();
