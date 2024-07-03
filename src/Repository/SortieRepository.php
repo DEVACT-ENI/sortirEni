@@ -51,13 +51,13 @@ class SortieRepository extends ServiceEntityRepository
         if ($formFilter->getDateFin())
             $qb->andWhere('s.dateHeureDebut <= :dateFin')->setParameter('dateFin', $formFilter->getDateFin());
 
-        if ($formFilter->getOrganisateur() && $user)
+        if ($formFilter->getChoiceValue() == "organisateur" && $user)
             $qb->andWhere('o = :user')->setParameter('user', $user);
 
-        if ($formFilter->getInscrit() && $user)
+        if ($formFilter->getChoiceValue() == "inscrit" && $user)
             $qb->andWhere(':user MEMBER OF s.listInscrit')->setParameter('user', $user);
 
-        if ($formFilter->getNonInscrit() && $user)
+        if ($formFilter->getChoiceValue() == "nonInscrit" && $user)
             $qb->andWhere(':user NOT MEMBER OF s.listInscrit')->setParameter('user', $user);
 
         if ($formFilter->getSortiesPassees())

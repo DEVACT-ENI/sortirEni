@@ -6,7 +6,9 @@ use App\Entity\Campus;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -18,7 +20,7 @@ class SearchSortieType extends AbstractType
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
                 'choice_label' => 'nom',
-                'required' => true
+                'required' => false,
             ])
             ->add('keyword', TextType::class, [
                 'required' => false,
@@ -34,17 +36,15 @@ class SearchSortieType extends AbstractType
                 'widget' => 'single_text',
                 'label' => 'Date de fin'
             ])
-            ->add('organisateur', CheckboxType::class, [
+            ->add('choiceValue', ChoiceType::class, [
+                'choices' => [
+                    'Sorties dont je suis l\'organisateur/trice' => 'organisateur',
+                    'Sorties auxquelles je suis inscrit/e' => 'inscrit',
+                    'Sorties auxquelles je ne suis pas inscrit/e' => 'nonInscrit'
+                ],
                 'required' => false,
-                'label' => 'Sorties dont je suis l\'organisateur/trice'
-            ])
-            ->add('inscrit', CheckboxType::class, [
-                'required' => false,
-                'label' => 'Sorties auxquelles je suis inscrit/e'
-            ])
-            ->add('nonInscrit', CheckboxType::class, [
-                'required' => false,
-                'label' => 'Sorties auxquelles je ne suis pas inscrit/e'
+                'expanded' => true,
+                'multiple' => false,
             ])
             ->add('sortiesPassees', CheckboxType::class, [
                 'required' => false,
