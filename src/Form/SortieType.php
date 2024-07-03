@@ -19,6 +19,7 @@ class SortieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
         $builder
             ->add('nom')
             ->add('dateHeureDebut', DateTimeType::class, [
@@ -38,10 +39,7 @@ class SortieType extends AbstractType
                 ],
                 'required' => false,
             ])
-            ->add('organisateur', EntityType::class, [
-                'class' => Participant::class,
-                'choice_label' => 'nom',
-            ])
+
 
 //            ->add('etat', EntityType::class, [
 //                'class' => Etat::class,
