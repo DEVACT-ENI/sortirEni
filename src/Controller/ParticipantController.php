@@ -85,9 +85,9 @@ class ParticipantController extends AbstractController
     public function detail(ParticipantRepository $participantRepository, SortieRepository $sortieRepository, int $id): Response
     {
         $participant = $participantRepository->find($id);
-        $countSortiesCreees = $sortieRepository->countSortiesCreeByOrganisateur($this->getUser());
-        $countSortiesInscrit = $sortieRepository->countSortiesInscritByParticipant($this->getUser());
-        $countSortiesAnnulees = $sortieRepository->countSortiesAnnuleesByParticipant($this->getUser());
+        $countSortiesCreees = $sortieRepository->countSortiesCreeByOrganisateur($participant);
+        $countSortiesInscrit = $sortieRepository->countSortiesInscritByParticipant($participant);
+        $countSortiesAnnulees = $sortieRepository->countSortiesAnnuleesByParticipant($participant);
         $form = $this->createForm(ModifProfilType::class, $participant);
 
         return $this->render('participant/modif-profil.html.twig', [
