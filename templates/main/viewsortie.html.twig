@@ -2,6 +2,34 @@
 
 {% block title %}{{ sortie.nom }}{% endblock %}
 
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+
+{% endblock %}
+
+{% block script %}
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var sortieLat = {{sortie.lieu.latitude}};
+            var sortieLng = {{sortie.lieu.longitude}};
+            var map = L.map('sortieMap').setView([sortieLat, sortieLng], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var marker = L.marker([sortieLat, sortieLng]).addTo(map);
+        });
+    </script>
+{% endblock %}
+
+
 
 {% block body %}
     <div class="card">
@@ -16,6 +44,10 @@
                     <p>Date de la sortie : {{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</p>
                     <p>Date limite d'inscription : {{ sortie.dateLimiteInscription|date('d/m/Y') }}</p>
                     <p>Durée : {{ sortie.duree }} minutes</p>
+                    <br>
+                    <div id="sortieMap" style="height: 250px;"></div>
+
+
                 </div>
 
                 <div class="col-md-6">
@@ -28,8 +60,8 @@
                     <p>Ville : {{ sortie.lieu.ville.nom }}</p>
 
 
-    {#              <p>Latitude : {{ sortie.lieu.latitude }}</p>#}
-    {#              <p>Longitude : {{ sortie.lieu.longitude }}</p>#}
+                  <p>Latitude : {{ sortie.lieu.latitude }}</p>
+                  <p>Longitude : {{ sortie.lieu.longitude }}</p>
                 </div>
             </div>
         </div>
@@ -92,6 +124,8 @@
                 width: 200px;
                 margin: 20px auto;
             }
+
+
         </style>
     {% endblock %}
 
