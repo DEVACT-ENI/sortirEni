@@ -4,7 +4,10 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('styles/homeCss.css') }}">
+{#    <link rel="stylesheet" href="{{ asset('styles/profilCss.css') }}">#}
 {% endblock %}
+
+{% form_theme form "form/form_theme_profile.html.twig" %}
 
 {% block body %}
     <div class="container">
@@ -17,7 +20,26 @@
 
         <h2 class="my-3">Filtrer les sorties</h2>
         {{ form_start(form) }}
-        {{ form_widget(form) }}
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card border-0">
+                    <div class="card-body">
+                        {{ form_row(form.campus) }}
+                        {{ form_row(form.keyword) }}
+                        {{ form_row(form.dateDebut) }}
+                        {{ form_row(form.dateFin) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card border-0">
+                    <div class="card-body">
+                        {{ form_widget(form.choiceValue, {'attr': {'class': 'align-content-start justify-content-start'}}) }}
+                        {{ form_widget(form.sortiesPassees, {'attr': {'class': 'align-content-start justify-content-start'}}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
         <button type="submit">Search</button>
         {{ form_end(form) }}
 
@@ -32,7 +54,7 @@
                                     <h4 class="card-title "><b>{{ sortie.nom }}</b></h4>
                                 </a>
                             {% else %}
-                                 <h4 class="card-title "><b>{{ sortie.nom }}</b></h4>
+                                <h4 class="card-title "><b>{{ sortie.nom }}</b></h4>
                             {% endif %}
                         </div>
                         <div class="col">
@@ -63,7 +85,8 @@
                             <span class="vl ml-3"></span>
                             {% if is_granted("PERM_BOUTTON_AFFICHER", sortie) %}
                                 <a href="{{ path('sortie_view', {'id': sortie.id}) }}"
-                                   class="btn btn-outlined btn-black text-muted bg-transparent link" data-wow-delay="0.7s">
+                                   class="btn btn-outlined btn-black text-muted bg-transparent link"
+                                   data-wow-delay="0.7s">
                                     <img src="{{ asset('images/logoOeil.svg') }}" width="19" height="19"
                                          alt="Logo afficher">
                                     <small>Afficher</small>
@@ -71,7 +94,8 @@
                             {% endif %}
                             {% if is_granted("PERM_BOUTTON_MODIFIER", sortie) %}
                                 <a href="{{ path('sorties_update', {'id': sortie.id}) }}"
-                                   class="btn btn-outlined btn-black text-muted bg-transparent link" data-wow-delay="0.7s">
+                                   class="btn btn-outlined btn-black text-muted bg-transparent link"
+                                   data-wow-delay="0.7s">
                                     <img src="{{ asset('images/logoModifier.svg') }}" width="19" height="19"
                                          alt="Logo modifier">
                                     <small>Modifier</small>
@@ -80,7 +104,8 @@
                             {% if is_granted("PERM_BOUTTON_PUBLIER", sortie) %}
                                 <a href="{{ path('sorties_publier', {'id': sortie.id}) }}"
                                    onclick="return confirm('Êtes-vous sur de vouloir publier cette sortie ?')"
-                                   class="btn btn-outlined btn-black text-muted bg-transparent link" data-wow-delay="0.7s">
+                                   class="btn btn-outlined btn-black text-muted bg-transparent link"
+                                   data-wow-delay="0.7s">
                                     <img src="{{ asset('images/logoPublier.svg') }}" width="19" height="19"
                                          alt="Logo publier">
                                     <small>Publier</small>
@@ -89,7 +114,8 @@
                             {% if is_granted("PERM_BOUTTON_ANNULER", sortie) %}
                                 <a href="{{ path('sorties_annuler_form', {'id': sortie.id}) }}"
                                    onclick="return confirm('Êtes-vous sur de vouloir annuler cette sortie ?')"
-                                   class="btn btn-outlined btn-black text-muted bg-transparent link" data-wow-delay="0.7s">
+                                   class="btn btn-outlined btn-black text-muted bg-transparent link"
+                                   data-wow-delay="0.7s">
                                     <img src="{{ asset('images/logoAnnuler.svg') }}" width="19" height="19"
                                          alt="Logo annuler">
                                     <small>Annuler</small>
@@ -97,7 +123,8 @@
                             {% endif %}
                             {% if is_granted("PERM_BOUTTON_AFFICHER", sortie) == false %}
                                 <a href="{{ path('app_login') }}"
-                                   class="btn btn-outlined btn-black text-muted bg-transparent link" data-wow-delay="0.7s">
+                                   class="btn btn-outlined btn-black text-muted bg-transparent link"
+                                   data-wow-delay="0.7s">
                                     <small>Connexion nécessaire</small>
                                 </a>
                             {% endif %}
@@ -113,10 +140,12 @@
                                             {% if file_exists(realpath('uploads/photos/photos/' ~ participant.id ~ '.webp')) %}
                                                 <img src="{{ asset('uploads/photos/photos/' ~ participant.id ~ '.webp') }}"
                                                      class="rounded-circle img-fluid test" width="35" height="35"
-                                                     alt="User photo" title="{{ participant.username }}" >
+                                                     alt="User photo" title="{{ participant.username }}">
                                             {% else %}
-                                                <img src="{{ asset('default.webp') }}" class="rounded-circle img-fluid test"
-                                                     width="35" height="35" alt="Default User photo" title="{{ participant.username }}">
+                                                <img src="{{ asset('default.webp') }}"
+                                                     class="rounded-circle img-fluid test"
+                                                     width="35" height="35" alt="Default User photo"
+                                                     title="{{ participant.username }}">
                                             {% endif %}
                                         </a>
                                     </li>
@@ -136,8 +165,8 @@
                                         <a href="{{ path('participants_inscription_sortie', {'id': sortie.id}) }}"
                                            class="btn btn-outlined btn-black text-muted bg-transparent link"
                                            data-wow-delay="0.7s">
-                                                <img src="https://img.icons8.com/ios/50/000000/plus.png" width="30"
-                                                     height="30 " class="more" alt="Inscription">
+                                            <img src="https://img.icons8.com/ios/50/000000/plus.png" width="30"
+                                                 height="30 " class="more" alt="Inscription">
                                         </a>
                                     </li>
                                 {% endif %}
