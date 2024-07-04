@@ -28,7 +28,7 @@ class CampusFixture extends Fixture implements FixtureGroupInterface, OrderedFix
 
     public static function getGroups(): array
     {
-        return ['campus', "all"];
+        return ['campus', "demo", "all"];
     }
 
 

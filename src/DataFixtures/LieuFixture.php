@@ -39,7 +39,7 @@ class LieuFixture extends Fixture implements FixtureGroupInterface, OrderedFixtu
 
     public static function getGroups(): array
     {
-        return ['lieu', "all"];
+        return ['lieu' , "demo", "all"];
     }
 
     public function getOrder(): int

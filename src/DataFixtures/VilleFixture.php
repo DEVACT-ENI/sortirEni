@@ -30,7 +30,7 @@ class VilleFixture extends Fixture implements FixtureGroupInterface, OrderedFixt
 
     public static function getGroups(): array
     {
-        return ['ville', "all"];
+        return ['ville', "demo", "all"];
     }
 
     public function getOrder(): int

@@ -29,7 +29,7 @@ class EtatFixture extends Fixture implements FixtureGroupInterface, OrderedFixtu
 
     public static function getGroups(): array
     {
-        return ['etat', "all"];
+        return ['etat', " demo", "all"];
     }
 
     public function getOrder(): int
