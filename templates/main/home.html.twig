@@ -185,14 +185,24 @@
 {% block script %}
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            let lastScrollTop = 0; // Variable pour stocker la dernière position de défilement
             const scrollButton = document.querySelector('.floating-btn');
             scrollButton.addEventListener('click', () => {
-                const createSortieButton = document.getElementById('createSortieButton');
-                if (createSortieButton) {
-                    createSortieButton.textContent = 'Go touch grass';
-                    createSortieButton.style.backgroundColor = 'green';
-                    createSortieButton.style.borderColor = 'green';
-                }
+                // Attendre un court délai pour permettre la mise à jour de la position de défilement
+                setTimeout(() => {
+                    let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    if (currentScrollTop > lastScrollTop) {
+                        // Le défilement est vers le bas
+                        const createSortieButton = document.getElementById('createSortieButton');
+                        if (createSortieButton) {
+                            createSortieButton.textContent = 'Go touch grass';
+                            createSortieButton.style.backgroundColor = 'green';
+                            createSortieButton.style.borderColor = 'green';
+                        }
+                    }
+                    // Mettre à jour lastScrollTop avec la position actuelle pour la prochaine itération
+                    lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // Pour les navigateurs mobiles
+                }, 100);
             });
         });
     </script>
