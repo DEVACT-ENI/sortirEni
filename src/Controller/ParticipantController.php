@@ -55,6 +55,7 @@ class ParticipantController extends AbstractController
         }
 
         return $this->render('participant/modif-profil.html.twig', [
+            'nomfonction' => 'modif_profil',
             'form' => $form->createView(),
             'formPhoto' => $formPhoto->createView(),
             'participant' => $participant,
@@ -81,12 +82,22 @@ class ParticipantController extends AbstractController
     }
 
     #[Route('/detail/{id}', name: 'detail', methods: ['GET'])]
-    public function detail(ParticipantRepository $participantRepository, int $id): Response
+    public function detail(ParticipantRepository $participantRepository, SortieRepository $sortieRepository, int $id): Response
     {
         $participant = $participantRepository->find($id);
+        $countSortiesCreees = $sortieRepository->countSortiesCreeByOrganisateur($this->getUser());
+        $countSortiesInscrit = $sortieRepository->countSortiesInscritByParticipant($this->getUser());
+        $countSortiesAnnulees = $sortieRepository->countSortiesAnnuleesByParticipant($this->getUser());
+        $form = $this->createForm(ModifProfilType::class, $participant);
 
-        return $this->render('participant/detail.html.twig', [
+        return $this->render('participant/modif-profil.html.twig', [
+            'nomfonction' => 'detail',
             'participant' => $participant,
+            'form' => $form->createView(),
+            'formPhoto' => null,
+            'countSortiesCreees' => $countSortiesCreees,
+            'countSortiesInscrit' => $countSortiesInscrit,
+            'countSortiesAnnulees' => $countSortiesAnnulees,
         ]);
     }
 
