@@ -18,6 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class LieuController extends AbstractController
 {
     #[Route('/create', name: 'create')]
+    #[Route('/create/{id}', name: 'createModif')]
     public function create(
         Request                $request,
         EntityManagerInterface $entityManager,
@@ -37,7 +38,13 @@ class LieuController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'New Lieu has been created !');
-            return $this->redirectToRoute('sorties_create');
+//            return $this->redirectToRoute('sorties_update', ['id' => $id]);
+            if(!$id) {
+                return $this->redirectToRoute('sorties_create');}
+            else{
+                return $this->redirectToRoute('sorties_update', ['id' => $id]);
+            }
+
 
         }
 

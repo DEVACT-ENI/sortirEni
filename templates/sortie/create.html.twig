@@ -37,7 +37,12 @@
 
                 <div>
                      {% if is_granted("PERM_BOUTTON_USER_CONNECTED") %}
-                          <a href="{{ path('lieux_create') }}" class="btn-creer" alt="Créer un nouveau lieu">+</a>
+                         {% if idSortie %}
+                             <a href="{{ path('lieux_createModif', {'id': idSortie}) }}" class="btn-creer" alt="Créer un nouveau lieu">+</a>
+                         {% else %}
+                             <a href="{{ path('lieux_create') }}" class="btn-creer" alt="Créer un nouveau lieu">+</a>
+                         {% endif %}
+
                      {% endif %}
                 </div>
 

@@ -1,5 +1,6 @@
 let map;
 let marker;
+let markerIss;
 
 function init(){
     //initialise la map aux coordonnées de Rennes avec map en id
@@ -63,7 +64,11 @@ function init(){
 
 
         marker.addTo(map)
+
+
+
     }
+
 
 
 }
@@ -125,6 +130,20 @@ xmlhttp.onreadystatechange = () => {
 
             let pos = [lat, lon];
             addMarker(pos);
+
+            //création de l'icon Iss
+            let issIcon = L.icon({
+                iconUrl: 'http://localhost/sortirEni/public/Images/iss.png',
+                iconSize:     [64, 64], // size of the icon
+                iconAnchor:   [32, 32], // point of the icon which will correspond to marker's location
+                popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+            });
+
+            //placement du marker sur la position choisie
+            markerIss = L.marker([47.25, -1.61], {icon: issIcon}).addTo(map);
+
+
+
             //permet de se déplacer sur la carte
             map.flyTo(pos, 13);
 

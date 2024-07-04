@@ -59,7 +59,8 @@ class SortieController extends AbstractController
         }
             return $this->render('sortie/create.html.twig', [
                 "sortieForm" => $sortieForm->createView(),
-                "Title" => $sortie->getId() !=null ?"Mettre à jour la sortie" : "Créer la sortie"
+                "Title" => $sortie->getId() !=null ?"Mettre à jour la sortie" : "Créer la sortie",
+                "idSortie" => $sortie->getId()
             ]);
     }
 
