@@ -39,6 +39,7 @@ class ModifProfilType extends AbstractType
                 'second_options' => ['label' => 'Confirmer le mot de passe'],
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 'mapped' => false,
+
             ])
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,

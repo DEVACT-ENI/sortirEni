@@ -20,8 +20,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class ParticipantController extends AbstractController
 {
     #[Route('/modif-profil', name: 'modif_profil', methods: ['GET', 'POST'])]
-    public function modifProfil(ParticipantRepository $participantRepository, Request $request, UserPasswordHasherInterface $hasher, FileUploader $fileUploader): Response
+    public function modifProfil(ParticipantRepository $participantRepository, Request $request, UserPasswordHasherInterface $hasher, FileUploader $fileUploader, SortieRepository $sortieRepository): Response
     {
+        $countSortiesCreees = $sortieRepository->countSortiesCreeByOrganisateur($this->getUser());
+        $countSortiesInscrit = $sortieRepository->countSortiesInscritByParticipant($this->getUser());
+        $countSortiesAnnulees = $sortieRepository->countSortiesAnnuleesByParticipant($this->getUser());
         $participant =  $participantRepository->find($this->getUser()->getId());
         $participant2 = clone $participant;
         $form = $this->createForm(ModifProfilType::class, $participant2);
@@ -52,9 +55,13 @@ class ParticipantController extends AbstractController
         }
 
         return $this->render('participant/modif-profil.html.twig', [
+            'nomfonction' => 'modif_profil',
             'form' => $form->createView(),
             'formPhoto' => $formPhoto->createView(),
             'participant' => $participant,
+            'countSortiesCreees' => $countSortiesCreees,
+            'countSortiesInscrit' => $countSortiesInscrit,
+            'countSortiesAnnulees' => $countSortiesAnnulees,
         ]);
     }
 
@@ -75,12 +82,22 @@ class ParticipantController extends AbstractController
     }
 
     #[Route('/detail/{id}', name: 'detail', methods: ['GET'])]
-    public function detail(ParticipantRepository $participantRepository, int $id): Response
+    public function detail(ParticipantRepository $participantRepository, SortieRepository $sortieRepository, int $id): Response
     {
         $participant = $participantRepository->find($id);
+        $countSortiesCreees = $sortieRepository->countSortiesCreeByOrganisateur($this->getUser());
+        $countSortiesInscrit = $sortieRepository->countSortiesInscritByParticipant($this->getUser());
+        $countSortiesAnnulees = $sortieRepository->countSortiesAnnuleesByParticipant($this->getUser());
+        $form = $this->createForm(ModifProfilType::class, $participant);
 
-        return $this->render('participant/detail.html.twig', [
+        return $this->render('participant/modif-profil.html.twig', [
+            'nomfonction' => 'detail',
             'participant' => $participant,
+            'form' => $form->createView(),
+            'formPhoto' => null,
+            'countSortiesCreees' => $countSortiesCreees,
+            'countSortiesInscrit' => $countSortiesInscrit,
+            'countSortiesAnnulees' => $countSortiesAnnulees,
         ]);
     }
 

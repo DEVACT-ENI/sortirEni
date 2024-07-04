@@ -20,6 +20,41 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+    public function countSortiesCreeByOrganisateur(Participant $participant) : int
+    {
+        return $this->createQueryBuilder('s')
+            ->select('COUNT(s)')
+            ->where('s.organisateur = :participant')
+            ->setParameter('participant', $participant)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countSortiesInscritByParticipant(Participant $participant) : int
+    {
+        return $this->createQueryBuilder('s')
+            ->select('COUNT(s)')
+            ->where(':participant MEMBER OF s.listInscrit')
+            ->setParameter('participant', $participant)
+            ->andWhere(':orga != s.organisateur')
+            ->setParameter('orga', $participant)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countSortiesAnnuleesByParticipant(Participant $participant) : int
+    {
+        return $this->createQueryBuilder('s')
+            ->select('COUNT(s)')
+            ->where(':participant MEMBER OF s.listInscrit')
+            ->setParameter('participant', $participant)
+            ->innerJoin('s.etat', 'e')
+            ->andWhere('e.code = :code')
+            ->setParameter('code', 'ANN')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     public function searchSorties(?FormFilterMainModele $formFilter, ?UserInterface $user, string $flag = "-a") : ?array
     {
         $qb = $this->createQueryBuilder('s')

@@ -149,7 +149,22 @@
         {% endfor %}
 
         {% if is_granted("PERM_BOUTTON_USER_CONNECTED") %}
-            <a href="{{ path('sorties_create') }}" class="btn btn-primary">Créer une sortie</a>
+            <a href="{{ path('sorties_create') }}" class="btn btn-primary" id="createSortieButton">Créer une sortie</a>
         {% endif %}
     </div>
+{% endblock %}
+{% block script %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const scrollButton = document.querySelector('.floating-btn');
+            scrollButton.addEventListener('click', () => {
+                const createSortieButton = document.getElementById('createSortieButton');
+                if (createSortieButton) {
+                    createSortieButton.textContent = 'Go touch grass';
+                    createSortieButton.style.backgroundColor = 'green';
+                    createSortieButton.style.borderColor = 'green';
+                }
+            });
+        });
+    </script>
 {% endblock %}
