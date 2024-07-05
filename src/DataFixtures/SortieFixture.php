@@ -66,9 +66,6 @@ class SortieFixture extends Fixture implements FixtureGroupInterface, OrderedFix
             $manager->persist($sortie);
         }
         $manager->flush();
-
-
-
     }
 
     public static function getGroups(): array
